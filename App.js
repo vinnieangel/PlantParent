@@ -5,14 +5,19 @@ import { StyleSheet, Text, View } from "react-native";
 import Login from "./screens/Login";
 import CreateAccount from "./screens/CreateAccount";
 import { createStackNavigator } from "@react-navigation/stack";
+import { NavigationContainer } from "@react-navigation/native";
 
 const Stack = createStackNavigator();
 export default class App extends React.Component {
   render() {
-    <Stack.Navigator>
-      <Stack.Screen name="Login" component={Login} />
-      <Stack.Screen name="CreateAccount" component={CreateAccount} />
-    </Stack.Navigator>;
+    return (
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="CreateAccount" component={CreateAccount} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    );
   }
 }
 
