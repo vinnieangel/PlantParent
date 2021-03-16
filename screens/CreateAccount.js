@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderWidth: 1,
     borderRadius: 10,
-    borderColor: "#5AAB61",
+    borderColor: "#30694B",
     marginBottom: 20,
     color: "#383838",
     paddingHorizontal: 10,
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderRadius: 10,
     // Plant Color
-    backgroundColor: "#5AAB61",
+    backgroundColor: "#30694B",
   },
   buttonText: {
     borderColor: "white",
