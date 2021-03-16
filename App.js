@@ -3,6 +3,7 @@ import React from "react";
 import { render } from "react-dom";
 import { StyleSheet, Text, View } from "react-native";
 import Login from "./screens/Login";
+import CreateAccount from "./screens/CreateAccount";
 
 export default class App extends React.Component {
   render() {
