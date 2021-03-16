@@ -6,8 +6,7 @@ let user = require('../models/user.model');
 router.route('/createAccount').post((req, res) => {
     const username = req.body.username;
     const password = req.body.password;
-    const type = req.body.type.toLowerCase();
-    const newUser = new user({username, password, type});
+    const newUser = new user({username, password});
 
     newUser.save().then(()=>{res.json("New user created!")}).catch(err=>{
         if(err.name == 'MongoError')
@@ -19,14 +18,12 @@ router.route('/createAccount').post((req, res) => {
             res.status(400).json('Error'+err)
     }
         )
-
-        
+    
 });
 
 router.route('/login').post((req, res) => {
     const username = req.body.username;
     const password = req.body.password;
-    const type = req.body.type;
 
     user.findOne({username:username, password:password}).then(user => {
         if(user){
@@ -38,35 +35,6 @@ router.route('/login').post((req, res) => {
     }).catch(err=>res.status(400).json('Error' + err));
     })
 
-router.route('/type/:username').get((req, res)=> {
-    const username = req.params.username;
-    user.findOne({username:username}).then(user=> {
-        if(user)
-        res.json({type:user.type})
-        else 
-        res.status(400).json('User not found')
-    }
-        ).catch(err=>res.status(400).json('Error' + err))
-})
-
-router.route('/payment/:username').get((req, res) => {
-    const username = req.params.username;
-    user.findOne({username:username}).then(user=> {
-        if (user) 
-        res.json({paymentMethods:user.paymentMethods})
-        else
-        res.status(400).json('User not found')
-    }).catch(err=>res.status(400).json('Error: ' + err))
-})
-
-router.route('/payment/save').post((req, res) => {
-    const username = req.body.username;
-    const paymentMethod = req.body.paymentMethod;
-    user.findOne({username:username}).then(user => {
-            user.paymentMethods.push(paymentMethod);
-            user.save().then(()=>res.status(200).json("Added payment")).catch(err=>res.status(400).json("Error: " + err));
-    }).catch(err=>res.status(400).json("Error: "+ err));
-});
 
 
 module.exports = router; //do this for all routers

@@ -17,12 +17,12 @@ connection.once('open', ()=>{
     console.log("Mongo DB connection established");
 })
 
-const menuItemsRouter = require('./routes/menuItems');
-app.use('/menuItems', menuItemsRouter); //if someone goes to /menuItems, they will see everything in the menuItemsRouter 
+//const menuItemsRouter = require('./routes/menuItems');
+//app.use('/menuItems', menuItemsRouter); //if someone goes to /menuItems, they will see everything in the menuItemsRouter 
 const usersRouter = require('./routes/users');
 app.use('/users', usersRouter);
-const ordersRouter = require('./routes/orders');
-app.use('/orders', ordersRouter);
+//const ordersRouter = require('./routes/orders');
+//app.use('/orders', ordersRouter);
 
 app.listen(port, ()=> {
     console.log(`Server is running on port ${port}`);

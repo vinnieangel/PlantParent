@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const paymentSchema = require('./payment.model')
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
@@ -15,16 +14,7 @@ const userSchema = new Schema({
         required: true,
         unique:false,
         trim:true
-    },
-    type: {
-        type: String,
-        required: true,
-        enum: ["customer", "admin", "staff"]
-    },
-    paymentMethods: {
-        type:[paymentSchema.Schema]
-    }
-    
+    },    
 });
 
 const userModule = mongoose.model('user', userSchema);

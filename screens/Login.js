@@ -22,7 +22,7 @@ export default class Login extends Component {
   }
 
   async login() {
-    fetch("https://badgerbytes.herokuapp.com/users/login", {
+    fetch("http://localhost:5000/users/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -36,14 +36,13 @@ export default class Login extends Component {
       .then(async (res) => {
         let response = await res.json();
         if (response == "Not Found") {
-          Alert.alert("Invalid username/password. Try again!");
-        } else {
-          await this.getUserType();
-          console.log(this.state.type);
+          window.alert("Invalid username/password. Try again!");
+        } else {/*
           this.props.navigation.navigate("LoggedIn", {
             username: this.state.username,
             accountType: this.state.type,
-          });
+          });*/
+          window.alert("Logged in!")
         }
       })
       .catch((err) => {
@@ -51,22 +50,6 @@ export default class Login extends Component {
       });
   }
 
-  async getUserType() {
-    await fetch(
-      "https://badgerbytes.herokuapp.com/users/type/" + this.state.username,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    )
-      .then((res) => res.json())
-      .then((res) => this.setState({ type: res.type }))
-      .catch((err) => {
-        console.log(err);
-      });
-  }
 
   render() {
     return (
