@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
     paddingTop: 40,
   },
   formTitle: {
-    color: "#1d3557",
+    color: "#30694B",
     paddingBottom: 10,
   },
   input: {
@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderRadius: 10,
     // Navy brand color
-    backgroundColor: "#1d3557",
+    backgroundColor: "#30694B",
   },
   buttonText: {
     borderColor: "white",
