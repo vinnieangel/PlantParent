@@ -6,6 +6,7 @@ import Login from "./screens/Login";
 import CreateAccount from "./screens/CreateAccount";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
+import { SearchArea } from "./screens/SearchArea";
 
 const Stack = createStackNavigator();
 export default class App extends React.Component {

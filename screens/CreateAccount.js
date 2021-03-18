@@ -15,7 +15,6 @@ export default class CreateAccount extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedAccountType: "Customer",
       username: "",
       password: "",
     };
@@ -23,7 +22,7 @@ export default class CreateAccount extends Component {
 
   async createAccount() {
     console.log("here");
-    await fetch("https://badgerbytes.herokuapp.com/users/createAccount", {
+    await fetch("http://localhost:5000/users/createAccount", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -32,19 +31,18 @@ export default class CreateAccount extends Component {
       body: JSON.stringify({
         username: this.state.username,
         password: this.state.password,
-        type: this.state.selectedAccountType,
       }),
     }).then(async (res) => {
       let response = await res.json();
       if (response == "Too short") {
-        Alert.alert(
+        window.alert(
           "Your username is too short! It needs be at least 8 characters long"
         );
       } else if (response == "Duplicate") {
-        Alert.alert("This username already exists. Try another one!");
+        window.alert("This username already exists. Try another one!");
       } else {
-        Alert.alert("Signed up successfully!");
-        this.props.navigation.navigate("Login");
+        window.alert("Signed up successfully!");
+        //this.props.navigation.navigate("Login");
       }
     });
   }
