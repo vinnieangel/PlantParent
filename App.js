@@ -14,6 +14,7 @@ export default class App extends React.Component {
     return (
       <NavigationContainer>
         <Stack.Navigator>
+        <Stack.Screen name="SearchArea" component={SearchArea} />
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="CreateAccount" component={CreateAccount} />
         </Stack.Navigator>
