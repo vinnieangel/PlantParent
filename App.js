@@ -7,7 +7,7 @@ import CreateAccount from "./screens/CreateAccount";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import SearchArea from "./screens/SearchArea";
-import Plant from "./screens/plant"
+import Plant from "./screens/plant";
 
 const Stack = createStackNavigator();
 export default class App extends React.Component {
@@ -15,7 +15,7 @@ export default class App extends React.Component {
     return (
       <NavigationContainer>
         <Stack.Navigator>
-        <Stack.Screen name="SearchArea" component={SearchArea} />
+          <Stack.Screen name="SearchArea" component={SearchArea} />
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="CreateAccount" component={CreateAccount} />
         </Stack.Navigator>
