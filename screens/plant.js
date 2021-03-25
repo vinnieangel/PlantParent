@@ -9,12 +9,6 @@ import {
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Navbar from "./../components/NavBar/NavBar";
-import {
-  useFonts,
-  Roboto_400Regular,
-  Bangers_400Regular,
-  OpenSans_400Regular,
-} from "@expo-google-fonts/dev";
 
 export default class AmaryllisInfo extends Component {
   render() {
