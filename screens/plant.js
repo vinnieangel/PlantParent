@@ -104,7 +104,11 @@ const styles = StyleSheet.create({
   },
   navFlex: {
     display: "flex",
-    // justifyContent: "flex-end",
+    position: "fixed",
+    alignSelf: "stretch",
+    bottom: 0,
+    left: 0,
+    right: 0,
   },
   careFont: {
     fontSize: 25,
