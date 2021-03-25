@@ -5,6 +5,7 @@ import Navbar from "./../components/NavBar/NavBar";
 
 
 export default class AmaryllisInfo extends Component {
+    name = this.props.name
     render() {
         return (
             <ScrollView style={styles.container}>

@@ -37,11 +37,9 @@ export default class Login extends Component {
         let response = await res.json();
         if (response == "Not Found") {
           window.alert("Invalid username/password. Try again!");
-        } else {/*
-          this.props.navigation.navigate("LoggedIn", {
-            username: this.state.username,
-            accountType: this.state.type,
-          });*/
+        } else {
+          this.props.navigation.navigate("TabNavigation")
+            
           window.alert("Logged in!")
         }
       })
