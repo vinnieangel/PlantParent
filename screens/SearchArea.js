@@ -2,18 +2,20 @@ import react from "react";
 import React, { Component } from "react";
 import { SafeAreaView } from "react-native";
 import { ScrollView } from "react-native";
-import {Card} from 'react-native-elements';
-import {
-  StyleSheet,
-  View,
-  Image,
-} from "react-native";
+import { Card } from "react-native-elements";
+import { StyleSheet, View, Image } from "react-native";
 import { SearchBar } from "react-native-elements";
 import { Searchbar } from "react-native-paper";
 
 export default class SearchArea extends React.Component {
-  dummyPlants = [{name: "plant1", img: require("../Images/p1.jpg")}, {name:"plant2", img:require("../Images/p2.jpg")}, 
-  {name:"plant3", img: require("../Images/p3.jpg")}, {name:"plant4", img: require("../Images/p4.jpg")}, {name:"plant5", img: require("../Images/p5.jpg")}, {name:"plant6", img: require("../Images/p6.jpg")}]
+  dummyPlants = [
+    { name: "plant1", img: require("../Images/p1.jpg") },
+    { name: "plant2", img: require("../Images/p2.jpg") },
+    { name: "plant3", img: require("../Images/p3.jpg") },
+    { name: "plant4", img: require("../Images/p4.jpg") },
+    { name: "plant5", img: require("../Images/p5.jpg") },
+    { name: "plant6", img: require("../Images/p6.jpg") },
+  ];
   state = {
     search: "",
   };
@@ -26,19 +28,31 @@ export default class SearchArea extends React.Component {
     let cards = [];
     for (let i = 0; i < this.dummyPlants.length; i++) {
       cards.push(
-      <View style ={{flex:1, width:500, height:200, alignContent:'center', justifyContent:'center'}}>
-      <Card key={this.dummyPlants[i].name} >
-        {
-          <View style ={{flex:1, alignItems:'center'}}>
-          <Image style={styles.plantImage} source={this.dummyPlants[i].img} />
-          </View>
-        }
-        <Card.Title>{this.dummyPlants[i].name}</Card.Title>
-        </Card></View>)
+        <View
+          style={{
+            flex: 1,
+            width: 500,
+            height: 200,
+            alignContent: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Card key={this.dummyPlants[i].name}>
+            {
+              <View style={{ flex: 1, alignItems: "center" }}>
+                <Image
+                  style={styles.plantImage}
+                  source={this.dummyPlants[i].img}
+                />
+              </View>
+            }
+            <Card.Title>{this.dummyPlants[i].name}</Card.Title>
+          </Card>
+        </View>
+      );
     }
     return cards;
   }
-
 
   render() {
     const { search } = this.state;
@@ -54,10 +68,7 @@ export default class SearchArea extends React.Component {
             value={search}
           />
         </View>
-        <ScrollView>
-        
-          {this.makeCard()}
-        </ScrollView>
+        <ScrollView>{this.makeCard()}</ScrollView>
       </SafeAreaView>
     );
   }
@@ -111,8 +122,8 @@ const styles = StyleSheet.create({
     width: 300,
     height: 200,
     resizeMode: "contain",
-    justifyContent:'center',
-    alignItems:'center',
-    alignContent:'center'
-}
+    justifyContent: "center",
+    alignItems: "center",
+    alignContent: "center",
+  },
 });
