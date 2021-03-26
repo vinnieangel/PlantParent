@@ -8,10 +8,8 @@ import {
   ScrollView,
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import Navbar from "./../components/NavBar/NavBar";
 
 export default class AmaryllisInfo extends Component {
-    
   render() {
     return (
       <>
@@ -115,9 +113,6 @@ export default class AmaryllisInfo extends Component {
               </Text>
             </View>
           </SafeAreaView>
-        <View style={styles.navFlex}>
-          <Navbar />
-        </View>
         </ScrollView>
       </>
     );
@@ -142,15 +137,6 @@ const styles = StyleSheet.create({
     shadowColor: "#C1C1C1",
     shadowOpacity: 0.7,
   },
-  navFlex: {
-    display: "flex",
-    position: "fixed",
-    alignSelf: "flex-end",
-    left: 0,
-    right: 0,
-    bottom: 0,
-    paddingBottom: 10,
-  },
   careFont: {
     fontSize: 25,
     color: "white",
@@ -173,25 +159,12 @@ const styles = StyleSheet.create({
     paddingLeft: 25,
     paddingRight: 25,
   },
-  //   needFlexWrapper: {
-  //     display: "flex",
-  //     justifyContent: "center",
-  //     paddingBottom: 30,
-  //   },
-  //   needContainer: {
-  //     display: "flex",
-  //     flex: 1,
-  //     flexDirection: "row",
-  //     justifyContent: "space-between",
-  //     width: "80%",
-  //     marginTop: 25,
-  //     marginBottom: 10,
-  //   },
+
   needFlexWrapper: {
     display: "flex",
     alignSelf: "center",
     paddingBottom: 30,
-    paddingLeft: 25
+    paddingLeft: 25,
   },
   needContainer: {
     flexDirection: "row",
