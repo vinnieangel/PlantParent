@@ -38,16 +38,15 @@ export default class Login extends Component {
         if (response == "Not Found") {
           window.alert("Invalid username/password. Try again!");
         } else {
-          this.props.navigation.navigate("TabNavigation")
-            
-          window.alert("Logged in!")
+          this.props.navigation.navigate("TabNavigation");
+
+          window.alert("Logged in!");
         }
       })
       .catch((err) => {
         console.log(err);
       });
   }
-
 
   render() {
     return (
@@ -57,7 +56,7 @@ export default class Login extends Component {
         <View style={styles.logoContainer}>
           <Image
             style={styles.logo}
-            source={require("./../Images/badgerbytes-logo.png")}
+            source={require("./../Images/PlantParent.png")}
           />
         </View>
         <View style={styles.formContainer}>

@@ -60,7 +60,7 @@ export default class CreateAccount extends Component {
         <View style={styles.logoContainer}>
           <Image
             style={styles.logo}
-            source={require("./../Images/badgerbytes-logo.png")}
+            source={require("./../Images/PlantParent.png")}
           />
         </View>
         <View style={styles.formContainer}>
