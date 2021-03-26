@@ -22,7 +22,7 @@ export default class Login extends Component {
   }
 
   async login() {
-    fetch("http://localhost:5000/users/login", {
+    fetch("https://plantparent506.herokuapp.com/users/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

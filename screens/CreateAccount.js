@@ -22,7 +22,7 @@ export default class CreateAccount extends Component {
 
   async createAccount() {
     console.log("here");
-    await fetch("http://localhost:5000/users/createAccount", {
+    await fetch("https://plantparent506.herokuapp.com/users/createAccount", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
