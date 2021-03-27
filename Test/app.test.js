@@ -2,24 +2,32 @@ import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
 import Login from "../screens/Login";
 import "@testing-library/jest-dom/extend-expect";
-const app = require("../appTest.js");
-//const Login = require("../screens/Login");
 
 /*
-describe("App", function () {
-  it("app should return hello", function () {
-    assert.equal(app(), "hello");
-  });
-});
-*/
-
 test("Home should render OK", async () => {
   const { getByText, getByTestId, getAllByTestId, queryByText } = render(
     <Login />
   );
 });
+*/
 
-const userCredentials = {
-  userName: "buckydabadger",
-  password: "OnWisconsin",
-};
+test("render Login input component properly", () => {
+  const { debug, getByTestId, getByText, getByPlaceholderText } = render(
+    <Login />
+  );
+  const input = getByPlaceholderText("Username or email");
+  expect(input).toBeDefined();
+});
+
+test("render password input component properly", () => {
+  const { debug, getByTestId, getByText, getByPlaceholderText } = render(
+    <Login />
+  );
+  const password = getByPlaceholderText("Password");
+  expect(password).toBeDefined();
+  /*
+  fireEvent.changeText(input, "test");
+  const item = getByPlaceholderText("test");
+  expect(item).toBeDefined();
+  */
+});
