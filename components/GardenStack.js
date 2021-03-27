@@ -12,9 +12,6 @@ export default class App extends React.Component {
   render() {
     return (
         <Stack.Navigator
-        screenOptions={{
-            headerShown: false
-          }}
         >
           <Stack.Screen name="GardenView" component={GardenArea} />
           <Stack.Screen name="Plant" component={Plant} />
