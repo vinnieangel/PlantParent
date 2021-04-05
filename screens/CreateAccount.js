@@ -104,6 +104,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     flex: 1,
     padding: 20,
+    marginTop: 40,
   },
   container2: {
     padding: 20,
