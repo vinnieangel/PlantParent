@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { CalendarList } from "react-native-calendars";
+//import { CalendarList } from "react-native-calendars";
 import { StyleSheet, View, Text } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
@@ -8,7 +8,7 @@ export default class CalendarScreen extends Component {
     return (
       <View style={styles.container}>
         <Text>Calendar Screen</Text>
-        <CalendarList
+        {/*<CalendarList
           onVisibleMonthsChange={(months) => {
             console.log("new month", months);
           }}
@@ -16,7 +16,7 @@ export default class CalendarScreen extends Component {
           futureScrollRange={0}
           scrollEnabled={true}
           showScrollIndicator={true}
-        />
+        />*/}
         <View style={styles.optionWrapper}>
           <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
             <Ionicons name="ellipse-outline" size={20} color="#51A746" />

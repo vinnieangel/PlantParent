@@ -9,28 +9,42 @@ import { Ionicons } from '@expo/vector-icons';
 
 
 export default class SearchArea extends React.Component {
-  dummyPlants = [
-    { name: "plant1", img: require("../Images/p1.jpg"), descr:"This is Plant 1. Description goes here"},
-    { name: "plant2", img: require("../Images/p2.jpg"), descr:"This is Plant 2. Description goes here" },
-    { name: "plant3", img: require("../Images/p3.jpg"), descr:"This is Plant 3. Description goes here" },
-    { name: "plant4", img: require("../Images/p4.jpg"), descr:"This is Plant 4. Description goes here" },
-    { name: "plant5", img: require("../Images/p5.jpg"), descr:"This is Plant 5. Description goes here" },
-    { name: "plant6", img: require("../Images/p6.jpg"), descr:"This is Plant 6. Description goes here" },
-  ];
+  
+   
   state = {
     search: "",
     modalVisible: false,
-    clickedPlantIndex:undefined
+    clickedPlantIndex:undefined,
+    dummyPlants: []
   };
 
   updateSearch = (search) => {
     this.setState({ search });
   };
 
+  async componentDidMount() {
+    console.log('here')
+    await fetch('http://localhost:5000/plants/getAll', {
+      method: 'GET',
+      headers: {
+        "Content-Type": "application/json",
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    }).then(async res => {
+      if(res.status == 400) {
+        console.log(await res.json())
+      }
+      else {
+        return await res.json();
+      }
+    }).then(res => {this.setState({dummyPlants:res.plants})})
+  }
+
   render() {
     const { search } = this.state;
 
     const onChangeSearch = (query) => {console.log(query); this.setState({ search: query })};
+    console.log(this.state.dummyPlants)
     return (
       <SafeAreaView style={styles.container}> 
           <Searchbar
@@ -40,7 +54,7 @@ export default class SearchArea extends React.Component {
             value={search}
           />
         <FlatList
-            data={this.dummyPlants}
+            data={this.state.dummyPlants}
             numColumns={2}
             keyExtractor={(item, index) => item.name}
             renderItem={({item, index}) => 
@@ -51,7 +65,7 @@ export default class SearchArea extends React.Component {
                     });
                     }} >
                   <Card>
-                    <Image style = {styles.plantImage} source={item.img}>
+                    <Image style = {styles.plantImage} source={require("" + item.image)}>
                     </Image>
                   <Card.Title>{item.name}</Card.Title>
                   </Card>
@@ -65,7 +79,7 @@ export default class SearchArea extends React.Component {
               animationType="fade"
               transparent={true}
             > 
-            {this.dummyPlants[this.state.clickedPlantIndex] &&
+            {this.state.dummyPlants[this.state.clickedPlantIndex] &&
             
               <View style = {styles.modalView}>
                 <View style={{marginLeft:170}}>
@@ -74,7 +88,7 @@ export default class SearchArea extends React.Component {
                   </TouchableOpacity>
                 </View>
                 <Text style={{marginTop:10, marginBottom:20}}>
-                  {this.dummyPlants[this.state.clickedPlantIndex].descr}
+                  {this.state.dummyPlants[this.state.clickedPlantIndex].basicDescription}
                 </Text>
                 <TouchableOpacity style={styles.addButton} onPress={()=>{this.setState({modalVisible:false, clickedPlantIndex:undefined}); window.alert("Added to garden")}}>
                   <Text style={{color:'white'}}>
