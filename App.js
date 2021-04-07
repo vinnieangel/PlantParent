@@ -8,8 +8,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import SearchArea from "./screens/SearchArea";
 import GardenArea from "./screens/GardenArea";
-import Plant from "./screens/plant"
-import TabNavigation from "./components/TabNavigation"
+import Plant from "./screens/plant";
+import TabNavigation from "./components/TabNavigation";
 
 const Stack = createStackNavigator();
 export default class App extends React.Component {
@@ -18,7 +18,7 @@ export default class App extends React.Component {
       <NavigationContainer>
         <Stack.Navigator
           screenOptions={{
-            headerShown: false
+            headerShown: false,
           }}
         >
           <Stack.Screen name="Login" component={Login} />
@@ -26,7 +26,6 @@ export default class App extends React.Component {
           <Stack.Screen name="TabNavigation" component={TabNavigation} />
         </Stack.Navigator>
       </NavigationContainer>
-      // <Plant/>
     );
   }
 }
