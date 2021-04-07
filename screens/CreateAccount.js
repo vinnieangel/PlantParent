@@ -9,7 +9,6 @@ import {
   Text,
   Alert,
 } from "react-native";
-import Constants from "expo-constants";
 
 export default class CreateAccount extends Component {
   constructor(props) {
