@@ -1,5 +1,7 @@
-import React, { Component } from "react";
+import React, { useState, Component } from "react";
+import { Modal } from "react-native";
 import { View, SafeAreaView, StyleSheet } from "react-native";
+import { TextInput } from "react-native-gesture-handler";
 import {
   Avatar,
   Title,
@@ -11,6 +13,10 @@ import {
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 export default class ProfileScreen extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { modalVisible: false };
+  }
   render() {
     return (
       <SafeAreaView style={styles.container}>
@@ -47,12 +53,6 @@ export default class ProfileScreen extends Component {
             </Text>
           </View>
           <View style={styles.row}>
-            <Ionicons name="call-outline" color="#777777" size={20} />
-            <Text style={{ color: "#777777", marginLeft: 20 }}>
-              Phone Number
-            </Text>
-          </View>
-          <View style={styles.row}>
             <Ionicons name="mail-outline" color="#777777" size={20} />
             <Text style={{ color: "#777777", marginLeft: 20 }}>
               Email Address
@@ -61,18 +61,28 @@ export default class ProfileScreen extends Component {
         </View>
 
         <View style={styles.settingWrapper}>
-          <TouchableRipple onPress={() => {}}>
-            <View style={styles.settingItem}>
-              <Ionicons name="flower-outline" color="#FF6347" size={25} />
-              <Text style={styles.settingItemText}>Your Plants</Text>
+          <Modal
+            animationType="slide"
+            transparent={false}
+            visible={this.state.modalVisible}
+            onRequestClose={() => {
+              setModalVisible(!modalVisible);
+            }}
+          >
+            <View style={styles.changeInfo}>
+              <View style={styles.modalView}>
+                <TextInput
+                  placeholder="New Email"
+                  placeholderTextColor="#b5b5b5"
+                  style={styles.input}
+                  autoCapitalize="none"
+                  // onChangeText={(text) => {
+                  //   this.setState({ username: text });
+                  // }}
+                />
+              </View>
             </View>
-          </TouchableRipple>
-          <TouchableRipple onPress={() => {}}>
-            <View style={styles.settingItem}>
-              <Ionicons name="settings-outline" color="#FF6347" size={25} />
-              <Text style={styles.settingItemText}>Edit Profile</Text>
-            </View>
-          </TouchableRipple>
+          </Modal>
           <TouchableRipple onPress={() => {}}>
             <View style={styles.settingItem}>
               <Ionicons name="settings-outline" color="#FF6347" size={25} />
