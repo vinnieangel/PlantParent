@@ -1,5 +1,7 @@
 import React, { useState, Component } from "react";
 import { Modal } from "react-native";
+import { Pressable } from "react-native";
+import { Button } from "react-native";
 import { View, SafeAreaView, StyleSheet } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import {
@@ -15,7 +17,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 export default class ProfileScreen extends Component {
   constructor(props) {
     super(props);
-    this.state = { modalVisible: false };
+    this.state = { modalVisible: false, setModalVisible: false };
   }
   render() {
     return (
@@ -63,7 +65,7 @@ export default class ProfileScreen extends Component {
         <View style={styles.settingWrapper}>
           <Modal
             animationType="slide"
-            transparent={false}
+            transparent={true}
             visible={this.state.modalVisible}
             onRequestClose={() => {
               setModalVisible(!modalVisible);
@@ -76,17 +78,31 @@ export default class ProfileScreen extends Component {
                   placeholderTextColor="#b5b5b5"
                   style={styles.input}
                   autoCapitalize="none"
-                  // onChangeText={(text) => {
-                  //   this.setState({ username: text });
-                  // }}
                 />
+                <TextInput
+                  placeholder="Confirm the Email"
+                  placeholderTextColor="#b5b5b5"
+                  style={styles.input}
+                  autoCapitalize="none"
+                />
+                <Button style={styles.modalButton}>Save</Button>
+                <Button
+                  style={styles.modalButton}
+                  onPress={() => this.setState({ modalVisible: false })}
+                >
+                  Cancel
+                </Button>
               </View>
             </View>
           </Modal>
-          <TouchableRipple onPress={() => {}}>
+          <TouchableRipple
+            onPress={() => {
+              this.setState({ modalVisible: true });
+            }}
+          >
             <View style={styles.settingItem}>
               <Ionicons name="settings-outline" color="#FF6347" size={25} />
-              <Text style={styles.settingItemText}>Edit Profile</Text>
+              <Text style={styles.settingItemText}>Change Email</Text>
             </View>
           </TouchableRipple>
           <TouchableRipple onPress={() => {}}>
@@ -147,5 +163,9 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontSize: 16,
     lineHeight: 26,
+  },
+  modalButton: {
+    backgroundColor: "white",
+    color: "black",
   },
 });
