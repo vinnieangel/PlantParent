@@ -27,7 +27,7 @@ router.route('/login').post((req, res) => {
 
     user.findOne({username:username, password:password}).then(user => {
         if(user){
-            res.status(200).json('Logged in!')
+            res.status(200).json({userId: user._id})
         }
         else {
             res.status(400).json('Not Found')

@@ -1,11 +1,14 @@
 import react from "react";
 import React, { Component } from "react";
-import { SafeAreaView, FlatList, Button, Text } from "react-native";
+import { SafeAreaView, FlatList, Button, Text, TextInput } from "react-native";
 import { Card } from "react-native-elements";
 import { StyleSheet, View, Image, Modal } from "react-native";
 import { Searchbar } from "react-native-paper";
 import { TouchableOpacity } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
+import {Picker} from '@react-native-picker/picker';
+import DateTimePicker from '@react-native-community/datetimepicker';
+
 
 
 export default class SearchArea extends React.Component {
@@ -15,7 +18,10 @@ export default class SearchArea extends React.Component {
     search: "",
     modalVisible: false,
     clickedPlantIndex:undefined,
-    dummyPlants: []
+    dummyPlants: [],
+    givenName: "",
+    selectedStage: "seed",
+    dob: new Date(),
   };
 
   updateSearch = (search) => {
@@ -37,14 +43,28 @@ export default class SearchArea extends React.Component {
       else {
         return await res.json();
       }
-    }).then(res => {this.setState({dummyPlants:res.plants})})
+    }).then(res => {
+      let images = [];
+      let plants = [];
+      for(let plant of res.plants) {
+        plants.push(plant)
+      }
+      this.setState( {dummyPlants: plants});
+      console.log("here")
+    })
+  }
+
+  addToGarden() {
+    //When the user clicks the add to garrden button, I want to take the given plant, 
+    //all the information they've given, transform that into a user plant,
+    //post that to the userplant db, then post that to the user's garden db
   }
 
   render() {
     const { search } = this.state;
 
     const onChangeSearch = (query) => {console.log(query); this.setState({ search: query })};
-    console.log(this.state.dummyPlants)
+    console.log(this.props)
     return (
       <SafeAreaView style={styles.container}> 
           <Searchbar
@@ -65,7 +85,7 @@ export default class SearchArea extends React.Component {
                     });
                     }} >
                   <Card>
-                    <Image style = {styles.plantImage} source={require("" + item.image)}>
+                    <Image style = {styles.plantImage} source={{uri: item.image}}>
                     </Image>
                   <Card.Title>{item.name}</Card.Title>
                   </Card>
@@ -82,7 +102,7 @@ export default class SearchArea extends React.Component {
             {this.state.dummyPlants[this.state.clickedPlantIndex] &&
             
               <View style = {styles.modalView}>
-                <View style={{marginLeft:170}}>
+                <View style={{float:'right'}}>
                   <TouchableOpacity onPress={()=>{this.setState({modalVisible:false, clickedPlantIndex:undefined})}}>
                     <Ionicons name="close" size={20}></Ionicons>
                   </TouchableOpacity>
@@ -90,7 +110,48 @@ export default class SearchArea extends React.Component {
                 <Text style={{marginTop:10, marginBottom:20}}>
                   {this.state.dummyPlants[this.state.clickedPlantIndex].basicDescription}
                 </Text>
-                <TouchableOpacity style={styles.addButton} onPress={()=>{this.setState({modalVisible:false, clickedPlantIndex:undefined}); window.alert("Added to garden")}}>
+                <Text>
+                  Enter your plant's nickname
+                </Text>
+                <TextInput
+                  onChangeText= {(text)=> {
+                    this.setState({givenName:text})
+                  }}
+                  placeholder = {'Enter your plant\'s name here'}
+                  style = {styles.textInput}
+                >
+                </TextInput>
+                <Text>
+                  Choose what stage your plant is in
+                </Text>
+                <Picker
+                  selectedValue={this.state.selectedStage}
+                  onValueChange={(itemValue, itemIndex) =>
+                  this.setState({selectedStage:itemValue})
+                }>
+                <Picker.Item label="Seed" value="Seed" />
+                <Picker.Item label="Germinated" value="Germinated"/>
+                <Picker.Item label="Sapling" value="Sapling"/>
+                <Picker.Item label="Mature" value="Mature"/>
+                </Picker>
+                <Text>
+                  Select when your plant was born/bought/sown
+                </Text>
+                <DateTimePicker
+                testID="dateTimePicker"
+                value ={this.state.dob}
+                mode={"date"}
+                display="default"
+                onChange={(event, selectedDate) => this.setState({dob:selectedDate})}
+                />
+                <TouchableOpacity style={styles.addButton} onPress={()=>{
+                  if (this.state.givenName = "") {
+                    window.alert("Enter a plant name before adding to garden!")
+                  }
+                  else {
+                  this.setState({
+                  modalVisible:false, clickedPlantIndex:undefined, givenName: "", selectedStage: "seed", dob: new Date()}); window.alert("Added to garden")}}
+                  } >
                   <Text style={{color:'white'}}>
                     Add to Garden
                   </Text>
@@ -140,5 +201,13 @@ const styles = StyleSheet.create({
       width: 0,
       height: 2,
     },
+  },
+  textInput: {
+    padding: 5,
+    margin: 2,
+    width: '100%',
+    height: '20%',
+    borderWidth: 2,
+    borderColor:'green'
   }
 });

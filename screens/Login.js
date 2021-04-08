@@ -22,7 +22,7 @@ export default class Login extends Component {
   }
 
   async login() {
-    fetch("https://plantparent506.herokuapp.com/users/login", {
+    fetch("http://localhost:5000/users/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -38,9 +38,11 @@ export default class Login extends Component {
         if (response == "Not Found") {
           window.alert("Invalid username/password. Try again!");
         } else {
-          this.props.navigation.navigate("TabNavigation");
+          this.props.navigation.navigate("TabNavigation",{
+            userId: response.userId
+          });
 
-          window.alert("Logged in!");
+          
         }
       })
       .catch((err) => {

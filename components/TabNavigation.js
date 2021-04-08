@@ -8,6 +8,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const Tab = createBottomTabNavigator();
 export default class TabNavigation extends React.Component {
+  userId = this.props.route.params.userId
     render() {
         return (
                 <Tab.Navigator
@@ -35,7 +36,7 @@ export default class TabNavigation extends React.Component {
                       })}
                 >
                 <Tab.Screen name="My Garden" component={GardenStack} />
-                <Tab.Screen name="Search Plants" component={SearchArea} />
+                <Tab.Screen name="Search Plants" children={()=><SearchArea userId={this.userId}/>} />
                 <Tab.Screen name="Calendar" component={SearchArea}  />
                 <Tab.Screen name="Profile" component={SearchArea} />
                 </Tab.Navigator>

@@ -1,22 +1,22 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const wateringScheduleSchema = new Schema({
+const fertilizationScheduleSchema = new Schema({
     frequency: {
         type: Number,
         required: true
     },
-    lastWatered: {
+    lastFertilized: {
         type: Date,
         required:true,
         default:null
     },
-    nextWatering: {
+    nextFertilization: {
         type:Date,
         required:true,
         default: null
     }
 });
 
-const wateringScheduleModule = mongoose.model('wateringSchedule', wateringScheduleSchema);
-module.exports = wateringScheduleModule;
+const fertilizationScheduleModule = mongoose.model('fertilizationSchedule', fertilizationScheduleSchema);
+module.exports = fertilizationScheduleModule;
