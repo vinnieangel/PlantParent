@@ -9,6 +9,7 @@
     "test": "jest"
   },
   "jest": {
+    "testEnvironment": "jsdom",
     "preset": "react-native",
     "testRegex": "/*.test.js$",
     "collectCoverage": true,
@@ -30,12 +31,13 @@
   },
   "dependencies": {
     "@expo-google-fonts/dev": "^0.1.0",
-    "@react-native-community/datetimepicker": "^3.4.3",
+    "@react-native-community/datetimepicker": "github:react-native-community/datetimepicker",
     "@react-native-community/masked-view": "0.1.10",
     "@react-native-picker/picker": "^1.14.0",
     "@react-navigation/bottom-tabs": "^5.11.8",
     "@react-navigation/native": "^5.9.3",
     "@react-navigation/stack": "^5.14.3",
+    "@testing-library/dom": "^7.30.3",
     "@testing-library/react-native": "^7.2.0",
     "chai": "^4.3.4",
     "expo": "~40.0.0",

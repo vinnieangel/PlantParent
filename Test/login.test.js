@@ -1,15 +1,10 @@
 import React from "react";
+import ReactDOM from "react-dom";
 import { render, fireEvent } from "@testing-library/react-native";
 import Login from "../screens/Login";
+import { login } from "../screens/Login";
 import "@testing-library/jest-dom/extend-expect";
-
-/*
-test("Home should render OK", async () => {
-  const { getByText, getByTestId, getAllByTestId, queryByText } = render(
-    <Login />
-  );
-});
-*/
+import getByTestId from "@testing-library/dom";
 
 test("render Login input component properly", () => {
   const { debug, getByTestId, getByText, getByPlaceholderText } = render(
@@ -25,9 +20,23 @@ test("render password input component properly", () => {
   );
   const password = getByPlaceholderText("Password");
   expect(password).toBeDefined();
-  /*
-  fireEvent.changeText(input, "test");
-  const item = getByPlaceholderText("test");
-  expect(item).toBeDefined();
-  */
+});
+
+test("renders without crashing", () => {
+  const { debug, getByTestId, getByText, getByPlaceholderText } = render(
+    <Login />
+  );
+});
+
+test("render password input component properly", () => {
+  const { debug, getByTestId, getByText, getByPlaceholderText } = render(
+    <Login />
+  );
+  const password = getByTestId("button1");
+  expect(password).toBeDefined();
+});
+
+test("increments count", () => {
+  const { getByTestId, getByText } = render(<Login />);
+  fireEvent.press(getByTestId("button1"));
 });
