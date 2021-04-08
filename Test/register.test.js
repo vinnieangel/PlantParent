@@ -3,14 +3,6 @@ import { render, fireEvent } from "@testing-library/react-native";
 import "@testing-library/jest-dom/extend-expect";
 import Register from "../screens/CreateAccount";
 
-/*
-test("Home should render OK", async () => {
-  const { getByText, getByTestId, getAllByTestId, queryByText } = render(
-    <Login />
-  );
-});
-*/
-
 test("render register input component properly", () => {
   const { debug, getByTestId, getByText, getByPlaceholderText } = render(
     <Register />
@@ -25,14 +17,9 @@ test("render register password input component properly", () => {
   );
   const password = getByPlaceholderText("Enter your password");
   expect(password).toBeDefined();
-  /*
-  fireEvent.changeText(input, "test");
-  const item = getByPlaceholderText("test");
-  expect(item).toBeDefined();
-  */
 });
 
-test("increments count", () => {
+test("button 1 works", () => {
   const { getByTestId, getByText } = render(<Register />);
   fireEvent.press(getByTestId("button1"));
 });

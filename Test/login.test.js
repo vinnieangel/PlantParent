@@ -5,6 +5,7 @@ import Login from "../screens/Login";
 import { login } from "../screens/Login";
 import "@testing-library/jest-dom/extend-expect";
 import getByTestId from "@testing-library/dom";
+import ReactTestUtils from "react-dom/test-utils"; // ES6
 
 test("render Login input component properly", () => {
   const { debug, getByTestId, getByText, getByPlaceholderText } = render(
@@ -36,7 +37,7 @@ test("render password input component properly", () => {
   expect(password).toBeDefined();
 });
 
-test("increments count", () => {
+test("calls login correctly", () => {
   const { getByTestId, getByText } = render(<Login />);
   fireEvent.press(getByTestId("button1"));
 });
