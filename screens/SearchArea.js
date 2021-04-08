@@ -12,6 +12,10 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 
 
 export default class SearchArea extends React.Component {
+  
+  userID = this.props.userId;
+  givenName = "";
+  
   state = {
     search: "",
     modalVisible: false,
@@ -52,10 +56,50 @@ export default class SearchArea extends React.Component {
     })
   }
 
-  addToGarden() {
-    //When the user clicks the add to garrden button, I want to take the given plant, 
+  async addToGarden() {
+    //When the user clicks the add to garden button, I want to take the given plant, 
     //all the information they've given, transform that into a user plant,
     //post that to the userplant db, then post that to the user's garden db
+    console.log(JSON.stringify({
+      plantID : this.state.dummyPlants[this.state.clickedPlantIndex]._id,
+      givenName: this.givenName,
+      stage: this.state.selectedStage,
+      dob: this.state.dob
+    }))
+    await fetch('http://localhost:5000/userPlants/add', {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json",
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: JSON.stringify({
+        plantID : this.state.dummyPlants[this.state.clickedPlantIndex]._id,
+        givenName: this.givenName,
+        stage: this.state.selectedStage,
+        dob: this.state.dob
+      })
+    }).then(async res => {
+      return (await res.json());
+    }).then(async res => {
+      await fetch('http://localhost:5000/gardens/add', {
+        method: 'PUT',
+        headers: {
+          "Content-Type": "application/json",
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: JSON.stringify({
+          userID: this.userID,
+          plantID: res.userPlantID
+        })
+      }).then(()=> {
+        
+        this.setState({modalVisible:false, clickedPlantIndex:undefined, selectedStage: "seed", dob: new Date()});
+        this.givenName = "";
+        window.alert("Added to garden")
+        
+      }).catch(err => console.log("Error: " + err))
+    }).catch(err => console.log("Error: " + err))
+
   }
 
   render() {
@@ -113,9 +157,10 @@ export default class SearchArea extends React.Component {
                 </Text>
                 <TextInput
                   onChangeText= {(text)=> {
-                    this.setState({givenName:text})
+                    this.givenName = text;
                   }}
                   placeholder = {'Enter your plant\'s name here'}
+                  
                   style = {styles.textInput}
                 >
                 </TextInput>
@@ -142,14 +187,15 @@ export default class SearchArea extends React.Component {
                 display="default"
                 onChange={(event, selectedDate) => this.setState({dob:selectedDate})}
                 />
-                <TouchableOpacity style={styles.addButton} onPress={()=>{
+                <TouchableOpacity style={styles.addButton} onPress={async ()=>{
                   if (this.state.givenName = "") {
                     window.alert("Enter a plant name before adding to garden!")
                   }
                   else {
-                  this.setState({
-                  modalVisible:false, clickedPlantIndex:undefined, givenName: "", selectedStage: "seed", dob: new Date()}); window.alert("Added to garden")}}
-                  } >
+                    await this.addToGarden();
+                  }
+                }
+                }>
                   <Text style={{color:'white'}}>
                     Add to Garden
                   </Text>

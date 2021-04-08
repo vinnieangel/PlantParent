@@ -3,17 +3,15 @@ const Schema = mongoose.Schema;
 
 const userPlantSchema = new Schema({
     plantID: {
-        type: ObjectId,
+        type: String,
         required: true, 
-        unique:true, 
     },
     givenName: {
         type: String,
-        unique: true
     },
     stage: {
         type: String,
-        enum: ["seed", "germinated", "sapling", "mature"],
+        enum: ["Seed", "Germinated", "Sapling", "Mature"],
         required: true,
     },
     dob: {
@@ -21,10 +19,10 @@ const userPlantSchema = new Schema({
         required: true
     },
     wateringSchedule: {
-        type: ObjectId,
+        type: String,
     },
     fertilizingSchedule: {
-        type: ObjectId,
+        type: String,
     }
 });
 

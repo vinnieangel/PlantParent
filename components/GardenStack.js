@@ -13,8 +13,8 @@ export default class App extends React.Component {
     return (
         <Stack.Navigator
         >
-          <Stack.Screen name="GardenView" component={GardenArea} />
-          <Stack.Screen name="Plant" component={Plant} />
+          <Stack.Screen name="GardenView" component={GardenArea} options={{ userID: this.props.userID }} />
+          <Stack.Screen name="Plant" component={Plant} options={{ userID: this.props.userID }}/>
         </Stack.Navigator>
     );
   }

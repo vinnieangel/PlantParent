@@ -21,6 +21,38 @@ export default class GardenArea extends React.Component {
   {name:"plant5", img: require("../Images/p5.jpg")}, 
   {name:"plant6", img: require("../Images/p6.jpg")}]
 
+  userID = this.props.userID;
+  state = {
+    dummyPlants : [],
+    clickedPlantIndex:undefined
+  }
+
+  async componentDidMount() {
+    console.log('here')
+    await fetch('http://localhost:5000/plants/getAll', {
+      method: 'GET',
+      headers: {
+        "Content-Type": "application/json",
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    }).then(async res => {
+      if(res.status == 400) {
+        console.log(await res.json())
+      }
+      else {
+        return await res.json();
+      }
+    }).then(res => {
+      let images = [];
+      let plants = [];
+      for(let plant of res.plants) {
+        plants.push(plant)
+      }
+      this.setState( {dummyPlants: plants});
+      console.log("here")
+    })
+  }
+
   render() {
     return (
         <SafeAreaView style={styles.container}>
@@ -28,7 +60,7 @@ export default class GardenArea extends React.Component {
             Welcome to your garden!
         </Text>
         <FlatList
-            data={this.dummyPlants}
+            data={this.state.dummyPlants}
             numColumns={2}
             keyExtractor={(item, index) => item.name}
             renderItem={({item, index}) => 
@@ -37,7 +69,7 @@ export default class GardenArea extends React.Component {
                         name:item.name
                     }}}>
                         <Card>
-                            <Image style = {styles.plantImage} source={item.img}>
+                            <Image style = {styles.plantImage} source={{uri: item.image}}>
                             </Image>
                         <Card.Title>{item.name}</Card.Title>
                         </Card>

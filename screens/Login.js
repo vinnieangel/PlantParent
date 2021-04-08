@@ -39,7 +39,7 @@ export default class Login extends Component {
           window.alert("Invalid username/password. Try again!");
         } else {
           this.props.navigation.navigate("TabNavigation",{
-            userId: response.userId
+            userID: response.userID
           });
 
           
