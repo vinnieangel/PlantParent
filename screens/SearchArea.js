@@ -9,8 +9,6 @@ import { Ionicons } from '@expo/vector-icons';
 
 
 export default class SearchArea extends React.Component {
-  
-   
   state = {
     search: "",
     modalVisible: false,
@@ -64,11 +62,11 @@ export default class SearchArea extends React.Component {
                       console.log(this.state)
                     });
                     }} >
-                  <Card>
+                  {/* <Card>
                     <Image style = {styles.plantImage} source={require("" + item.image)}>
                     </Image>
                   <Card.Title>{item.name}</Card.Title>
-                  </Card>
+                  </Card> */}
                   </TouchableOpacity>
                 </View>}
         />
