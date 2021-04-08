@@ -12,8 +12,6 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 
 
 export default class SearchArea extends React.Component {
-  
-   
   state = {
     search: "",
     modalVisible: false,
@@ -88,7 +86,7 @@ export default class SearchArea extends React.Component {
                     <Image style = {styles.plantImage} source={{uri: item.image}}>
                     </Image>
                   <Card.Title>{item.name}</Card.Title>
-                  </Card>
+                  </Card> 
                   </TouchableOpacity>
                 </View>}
         />

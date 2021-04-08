@@ -1,10 +1,12 @@
-import * as React from 'react';
-import { Text, View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import GardenStack from './GardenStack'
-import SearchArea from '../screens/SearchArea'
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import * as React from "react";
+import { Text, View } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import GardenStack from "./GardenStack";
+import SearchArea from "../screens/SearchArea";
+import ProfileScreen from "../screens/Profile";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import CalendarScreen from "../screens/CalendarArea";
 
 const Tab = createBottomTabNavigator();
 export default class TabNavigation extends React.Component {
