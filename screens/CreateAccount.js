@@ -85,6 +85,7 @@ export default class CreateAccount extends Component {
 
             <TouchableOpacity style={styles.buttonContainer}>
               <Text
+                testID="button1"
                 style={styles.buttonText}
                 onPress={() => this.createAccount()}
               >

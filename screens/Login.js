@@ -38,11 +38,9 @@ export default class Login extends Component {
         if (response == "Not Found") {
           window.alert("Invalid username/password. Try again!");
         } else {
-          this.props.navigation.navigate("TabNavigation",{
-            userId: response.userId
+          this.props.navigation.navigate("TabNavigation", {
+            userId: response.userId,
           });
-
-          
         }
       })
       .catch((err) => {
@@ -86,6 +84,7 @@ export default class Login extends Component {
 
           {/* ------ Buttons ------ */}
           <TouchableOpacity
+            testID="button1"
             onPress={() => this.login()}
             style={styles.buttonContainer}
           >
@@ -95,6 +94,7 @@ export default class Login extends Component {
           <View style={styles.accountLink}>
             <Text>Don't have an account? </Text>
             <TouchableOpacity
+              testID="button2"
               onPress={() => this.props.navigation.navigate("CreateAccount")}
             >
               <Text style={{ color: "#5e85bd" }}>Create Account</Text>

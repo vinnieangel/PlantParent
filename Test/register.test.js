@@ -31,3 +31,8 @@ test("render register password input component properly", () => {
   expect(item).toBeDefined();
   */
 });
+
+test("increments count", () => {
+  const { getByTestId, getByText } = render(<Register />);
+  fireEvent.press(getByTestId("button1"));
+});
