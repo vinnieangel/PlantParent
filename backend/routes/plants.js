@@ -12,4 +12,11 @@ router.route('/getAll').get((req, res) => {
     }).catch(err => res.status(400).json("Error: " + err))
 });
 
+router.route('/getPlant/:plantID').get((req, res) => {
+    const plantID = req.params.plantID;
+    plant.findOne({_id:plantID}).then(plant => res.status(200).json(plant)).catch(err => res.status(400).json("Error: " + err))
+});
+
+
+
 module.exports = router; //do this for all routers

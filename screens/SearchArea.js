@@ -13,7 +13,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 
 export default class SearchArea extends React.Component {
   
-  userID = this.props.userId;
+  userID = this.props.userID;
   givenName = "";
   
   state = {
@@ -22,7 +22,7 @@ export default class SearchArea extends React.Component {
     clickedPlantIndex:undefined,
     dummyPlants: [],
     givenName: "",
-    selectedStage: "seed",
+    selectedStage: "Seed",
     dob: new Date(),
   };
 
@@ -93,7 +93,7 @@ export default class SearchArea extends React.Component {
         })
       }).then(()=> {
         
-        this.setState({modalVisible:false, clickedPlantIndex:undefined, selectedStage: "seed", dob: new Date()});
+        this.setState({modalVisible:false, clickedPlantIndex:undefined, selectedStage: "Seed", dob: new Date()});
         this.givenName = "";
         window.alert("Added to garden")
         

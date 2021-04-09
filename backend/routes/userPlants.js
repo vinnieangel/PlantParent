@@ -12,4 +12,12 @@ router.route('/add').post((req, res) => {
 
 });
 
+
+
+router.route('/getPlant/:plantID').get(async (req, res) => {
+    let plantID = req.params.plantID;
+    
+    userPlant.findOne({_id:plantID}).then(plant => res.status(200).json(plant)).catch(err=> res.status(400).json("Error: "+err))
+});
+
 module.exports = router; //do this for all routers

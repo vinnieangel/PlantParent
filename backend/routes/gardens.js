@@ -1,9 +1,11 @@
 const router = require('express').Router();
 let garden = require('../models/garden.model');
 
+
 router.route('/add').put((req, res) => {
     const userID = req.body.userID;
     const plantID = req.body.plantID;
+    
 
     garden.findOne({userID:userID}).then(gard => {
         if(gard == null) {
@@ -17,5 +19,17 @@ router.route('/add').put((req, res) => {
         }
     }).catch(err=>res.status(400).json('Error: '+ err) )
 });
+
+router.route('/get/:userID').get((req, res) => {
+    const userID = req.params.userID;
+    garden.findOne({userID:userID}).then(gard => {
+        if(gard == null) {
+            res.status(200).json("Empty!")
+        }
+        else {
+            res.status(200).json(gard.plants)
+        }
+    })
+})
 
 module.exports = router; //do this for all routers
