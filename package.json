@@ -9,6 +9,7 @@
     "test": "jest"
   },
   "jest": {
+    "setupFiles": ["<rootDir>/Test/setupTests.js"],
     "testEnvironment": "jsdom",
     "preset": "react-native",
     "testRegex": "/*.test.js$",
@@ -61,6 +62,7 @@
     "@babel/core": "~7.9.0",
     "@testing-library/jest-dom": "^5.11.10",
     "enzyme": "^3.11.0",
+    "enzyme-adapter-react-15": "^1.4.3",
     "enzyme-adapter-react-16": "^1.15.2",
     "jest-enzyme": "^7.1.2"
   },
