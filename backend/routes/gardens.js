@@ -1,7 +1,6 @@
 const router = require('express').Router();
 let garden = require('../models/garden.model');
 
-
 router.route('/add').put((req, res) => {
     const userID = req.body.userID;
     const plantID = req.body.plantID;
@@ -31,5 +30,19 @@ router.route('/get/:userID').get((req, res) => {
         }
     })
 })
+
+router.route('/delete').delete((req,res) => {
+    const userID = req.body.userID;
+    const userPlantID = req.body.userPlantID;
+
+    garden.findOne({userID:userID}).then(gard => {
+        gard.plants.pull(userPlantID);
+        gard.save().then(doc=>{
+            if(gard.plants.length == 0) {
+                garden.findOneAndRemove({_id:doc._id}).then(()=>res.status(200).json("Deleted!")).catch(err=>res.status(400).json("Error: " + err))
+            }
+            res.status(200).json("Deleted!")}).catch(err => res.status(400).json("Error: "+err))
+    }).catch(err => res.status(400).json("Error: "+err))
+});
 
 module.exports = router; //do this for all routers

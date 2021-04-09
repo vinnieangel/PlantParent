@@ -115,6 +115,7 @@ export default class SearchArea extends React.Component {
             onChangeText={onChangeSearch}
             value={search}
           />
+          <View style = {styles.listContainer}>
         <FlatList
             data={this.state.dummyPlants}
             numColumns={2}
@@ -134,7 +135,7 @@ export default class SearchArea extends React.Component {
                   </TouchableOpacity>
                 </View>}
         />
-        
+            </View>
             <View>
             <Modal
               visible={this.state.modalVisible}
@@ -212,6 +213,11 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",
     flex: 1,
+  },
+  listContainer: {
+    flex:1,
+    justifyContent: "center",
+    alignItems: "center",
   },
   searchBarContainer: {
     justifyContent: "center",

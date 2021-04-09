@@ -6,10 +6,44 @@ import {
   Image,
   Text,
   ScrollView,
+  TouchableOpacity
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
 
-export default class AmaryllisInfo extends Component {
+export default class Plant extends Component {
+  userID = this.props.route.params.userID;
+  userPlant = this.props.route.params.userPlant;
+  plant = this.props.route.params.plant;
+
+  async delete() {
+    await fetch('http://localhost:5000/gardens/delete', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type':'application/json'
+      },
+      body: JSON.stringify({
+        userID: this.userID,
+        userPlantID : this.userPlant._id
+      })
+    }).then(async ()=> {
+      await fetch('http://localhost:5000/userPlants/delete', {
+        method:'DELETE',
+        headers: {
+          'Content-Type':'application/json'
+        },
+        body: JSON.stringify({
+              userPlantID: this.userPlant._id
+          })
+      }).then(()=> {
+        this.props.navigation.replace("GardenView")
+      }).catch(err => console.log("Error: " + err))
+    }).catch(err=>console.log("Error: " + err))
+  }
+
+
   render() {
     return (
       <>
@@ -19,36 +53,66 @@ export default class AmaryllisInfo extends Component {
               <View style={styles.plantImage}>
                 <Image
                   style={styles.imageContainer}
-                  source={require("../Images/p2.jpg")}
+                  source={{uri:this.plant.image}}
                 />
               </View>
               <View style={styles.descriptionWrapper}>
                 <View>
-                  <Text style={styles.title}>Bush Plant</Text>
+                  <Text style={styles.title}>{this.userPlant.givenName}</Text>
                 </View>
                 <View>
                   <Text style={styles.subtitle}>
-                    If the "Swiss Chess Plant", the Monstera delicosa is famous
-                    for its quirky natural leaf holes.
+                    {this.plant.name}
                   </Text>
+                </View>
+                <View>
+                  <TouchableOpacity style = {styles.deleteButton} onPress = {()=>this.delete()}>
+                    <Text style = {{color:'white', fontWeight:500}}>
+                      Delete from garden
+                    </Text>
+                  </TouchableOpacity>
                 </View>
               </View>
             </View>
 
             <View style={styles.needFlexWrapper}>
               <View style={styles.needContainer}>
-                <View style={styles.icon}>
+                {/*<View style={styles.icon}>
                   <Ionicons name="sunny-outline" size={50} color="#51A746" />
                   <Text style={styles.amount}>Full Sun</Text>
                 </View>
                 <View style={styles.icon}>
                   <Ionicons name="water-outline" size={50} color="#51A746" />
                   <Text style={styles.amount}>Every Week</Text>
-                </View>
+                </View>*/}
+                {this.userPlant.stage == "Seed" && 
                 <View style={styles.icon}>
-                  <Ionicons name="resize-outline" size={50} color="#51A746" />
-                  <Text style={styles.amount}>Large</Text>
+                  <MaterialCommunityIcons name="seed" size={50} color="#51A746" />
+                  <Text style={styles.amount}>Seed</Text>
                 </View>
+                }
+                
+                {this.userPlant.stage == "Germinated" && 
+                <View style={styles.icon}>
+                  <FontAwesome5 name="seedling" size={50} color="#51A746" />
+                  <Text style={styles.amount}>Germinated</Text>
+                </View>
+                }
+                
+                {this.userPlant.stage == "Sapling" && 
+                <View style={styles.icon}>
+                  <MaterialCommunityIcons name="leaf" size={50} color="#51A746" />
+                  <Text style={styles.amount}>Sapling</Text>
+                </View>
+                }
+
+                {this.userPlant.stage == "Mature" && 
+                <View style={styles.icon}>
+                  <Entypo name="tree" size={50} color="#51A746" />
+                  <Text style={styles.amount}>Mature</Text>
+                </View>
+                }
+
               </View>
             </View>
 
@@ -59,36 +123,36 @@ export default class AmaryllisInfo extends Component {
                   <View style={styles.careContainer}>
                     <View style={styles.careWrapper}>
                       <Text style={styles.careTitle}>Watering</Text>
-                      <Text style={styles.careAmount}>Every 5-7 Days</Text>
+                      <Text style={styles.careAmount}>{this.plant.basicWatering}</Text>
                     </View>
 
                     <View style={styles.careWrapper}>
-                      <Text style={styles.careTitle}>Repoting</Text>
-                      <Text style={styles.careAmount}>Every 6 months</Text>
+                      <Text style={styles.careTitle}>Potting</Text>
+                      <Text style={styles.careAmount}>{this.plant.basicPot}</Text>
                     </View>
 
                     <View style={styles.careWrapper}>
-                      <Text style={styles.careTitle}>Plant Type</Text>
-                      <Text style={styles.careAmount}>Something else</Text>
+                      <Text style={styles.careTitle}>Light</Text>
+                      <Text style={styles.careAmount}>{this.plant.basicLight}</Text>
                     </View>
                   </View>
 
                   <View style={styles.careContainer}>
                     <View style={styles.careWrapper}>
-                      <Text style={styles.careTitle}>Fertilizer Type </Text>
-                      <Text style={styles.careAmount}>Organic</Text>
+                      <Text style={styles.careTitle}>Temperature</Text>
+                      <Text style={styles.careAmount}>{this.plant.basicTemp}</Text>
                     </View>
 
                     <View style={styles.careWrapper}>
                       <Text style={styles.careTitle}>
-                        Fertilizing Frequency
+                        Fertilization
                       </Text>
-                      <Text style={styles.careAmount}>Monthly</Text>
+                      <Text style={styles.careAmount}>{this.plant.basicFertilizing}</Text>
                     </View>
 
                     <View style={styles.careWrapper}>
-                      <Text style={styles.careTitle}>Plant size</Text>
-                      <Text style={styles.careAmount}>Wow</Text>
+                      <Text style={styles.careTitle}>Date of birth</Text>
+                      <Text style={styles.careAmount}>{new Date( this.userPlant.dob).toString()}</Text>
                     </View>
                   </View>
                 </View>
@@ -98,18 +162,7 @@ export default class AmaryllisInfo extends Component {
             <View style={styles.aboutSection}>
               <Text style={styles.title}> About </Text>
               <Text style={styles.subtitle}>
-                Nicknamed the “swiss cheese plant”, the Monstera deliciosa is
-                famous for its quirky natural leaf holes. These holes are
-                theorized to maximize sun fleck capture on the forest floor.
-                Nicknamed the “swiss cheese plant”, the Monstera deliciosa is
-                famous for its quirky natural leaf holes. These holes are
-                theorized to maximize sun fleck capture on the forest floor.
-                Nicknamed the “swiss cheese plant”, the Monstera deliciosa is
-                famous for its quirky natural leaf holes. These holes are
-                theorized to maximize sun fleck capture on the forest floor.
-                Nicknamed the “swiss cheese plant”, the Monstera deliciosa is
-                famous for its quirky natural leaf holes. These holes are
-                theorized to maximize sun fleck capture on the forest floor.
+                {this.plant.basicDescription}
               </Text>
             </View>
           </SafeAreaView>
@@ -146,6 +199,7 @@ const styles = StyleSheet.create({
   careContainer: {
     flexDirection: "column",
     justifyContent: "flex-start",
+    width:400
   },
   careWrapper: {
     flexDirection: "column",
@@ -230,8 +284,16 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: "white",
     paddingTop: 3,
+    
   },
   aboutSection: {
     paddingTop: 30,
   },
+  deleteButton: {
+    marginTop: 10,
+    padding: 10,
+    backgroundColor:'red',
+    borderRadius:2,
+    width:150
+  }
 });

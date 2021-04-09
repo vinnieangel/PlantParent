@@ -20,4 +20,10 @@ router.route('/getPlant/:plantID').get(async (req, res) => {
     userPlant.findOne({_id:plantID}).then(plant => res.status(200).json(plant)).catch(err=> res.status(400).json("Error: "+err))
 });
 
+router.route('/delete').delete((req, res) => {
+    let userPlantID = req.body.userPlantID;
+    userPlant.findOneAndRemove({_id:userPlantID}).then(()=> res.status(200).json("Deleted!")).catch(err => res.status(400).json("Error: " + err ))
+
+})
+
 module.exports = router; //do this for all routers

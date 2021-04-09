@@ -8,14 +8,7 @@ import { SearchBar } from "react-native-elements";
 import { Searchbar } from "react-native-paper";
 
 export default class GardenArea extends React.Component {
-  dummyPlants = [
-    { name: "plant1", img: require("../Images/p1.jpg") },
-    { name: "plant2", img: require("../Images/p2.jpg") },
-    { name: "plant3", img: require("../Images/p3.jpg") },
-    { name: "plant4", img: require("../Images/p4.jpg") },
-    { name: "plant5", img: require("../Images/p5.jpg") },
-    { name: "plant6", img: require("../Images/p6.jpg") },
-  ];
+ 
 
   userID = this.props.route.params.userID;
   state = {
@@ -97,9 +90,10 @@ export default class GardenArea extends React.Component {
             keyExtractor={(item, index) => item._id}
             renderItem={({item, index}) => 
                 <View>
-                    <TouchableOpacity onPress={()=>{//this.props.navigation.navigate('Plant'), {
-                        //name:this.state.plants[index].name
-                    //}
+                    <TouchableOpacity onPress={()=>{this.props.navigation.navigate('Plant', {
+                        userPlant: this.state.userPlants[index],
+                        plant: this.state.plants[index],
+                    })
                   }}>
                         <Card>
                             <Image style = {styles.plantImage} source={{uri: this.state.plants[index].image}}>
