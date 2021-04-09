@@ -6,12 +6,12 @@ import {
   Image,
   Text,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { FontAwesome5 } from '@expo/vector-icons';
-import { Entypo } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
+import { Entypo } from "@expo/vector-icons";
 
 export default class Plant extends Component {
   userID = this.props.route.params.userID;
@@ -19,30 +19,33 @@ export default class Plant extends Component {
   plant = this.props.route.params.plant;
 
   async delete() {
-    await fetch('https://plantparent506.herokuapp.com/gardens/delete', {
-      method: 'DELETE',
+    await fetch("https://plantparent506.herokuapp.com/gardens/delete", {
+      method: "DELETE",
       headers: {
-        'Content-Type':'application/json'
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         userID: this.userID,
-        userPlantID : this.userPlant._id
-      })
-    }).then(async ()=> {
-      await fetch('https://plantparent506.herokuapp.com/userPlants/delete', {
-        method:'DELETE',
-        headers: {
-          'Content-Type':'application/json'
-        },
-        body: JSON.stringify({
-              userPlantID: this.userPlant._id
+        userPlantID: this.userPlant._id,
+      }),
+    })
+      .then(async () => {
+        await fetch("https://plantparent506.herokuapp.com/userPlants/delete", {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userPlantID: this.userPlant._id,
+          }),
+        })
+          .then(() => {
+            this.props.navigation.replace("GardenView");
           })
-      }).then(()=> {
-        this.props.navigation.replace("GardenView")
-      }).catch(err => console.log("Error: " + err))
-    }).catch(err=>console.log("Error: " + err))
+          .catch((err) => console.log("Error: " + err));
+      })
+      .catch((err) => console.log("Error: " + err));
   }
-
 
   render() {
     return (
@@ -53,7 +56,7 @@ export default class Plant extends Component {
               <View style={styles.plantImage}>
                 <Image
                   style={styles.imageContainer}
-                  source={{uri:this.plant.image}}
+                  source={{ uri: this.plant.image }}
                 />
               </View>
               <View style={styles.descriptionWrapper}>
@@ -61,15 +64,14 @@ export default class Plant extends Component {
                   <Text style={styles.title}>{this.userPlant.givenName}</Text>
                 </View>
                 <View>
-                  <Text style={styles.subtitle}>
-                    {this.plant.name}
-                  </Text>
+                  <Text style={styles.subtitle}>{this.plant.name}</Text>
                 </View>
                 <View>
-                  <TouchableOpacity style = {styles.deleteButton} onPress = {()=>this.delete()}>
-                    <Text style = {{color:'white', fontWeight:500}}>
-                      Delete from garden
-                    </Text>
+                  <TouchableOpacity
+                    style={styles.deleteButton}
+                    onPress={() => this.delete()}
+                  >
+                    <Text style={{ color: "white" }}>Delete from garden</Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -85,34 +87,41 @@ export default class Plant extends Component {
                   <Ionicons name="water-outline" size={50} color="#51A746" />
                   <Text style={styles.amount}>Every Week</Text>
                 </View>*/}
-                {this.userPlant.stage == "Seed" && 
-                <View style={styles.icon}>
-                  <MaterialCommunityIcons name="seed" size={50} color="#51A746" />
-                  <Text style={styles.amount}>Seed</Text>
-                </View>
-                }
-                
-                {this.userPlant.stage == "Germinated" && 
-                <View style={styles.icon}>
-                  <FontAwesome5 name="seedling" size={50} color="#51A746" />
-                  <Text style={styles.amount}>Germinated</Text>
-                </View>
-                }
-                
-                {this.userPlant.stage == "Sapling" && 
-                <View style={styles.icon}>
-                  <MaterialCommunityIcons name="leaf" size={50} color="#51A746" />
-                  <Text style={styles.amount}>Sapling</Text>
-                </View>
-                }
+                {this.userPlant.stage == "Seed" && (
+                  <View style={styles.icon}>
+                    <MaterialCommunityIcons
+                      name="seed"
+                      size={50}
+                      color="#51A746"
+                    />
+                    <Text style={styles.amount}>Seed</Text>
+                  </View>
+                )}
 
-                {this.userPlant.stage == "Mature" && 
-                <View style={styles.icon}>
-                  <Entypo name="tree" size={50} color="#51A746" />
-                  <Text style={styles.amount}>Mature</Text>
-                </View>
-                }
+                {this.userPlant.stage == "Germinated" && (
+                  <View style={styles.icon}>
+                    <FontAwesome5 name="seedling" size={50} color="#51A746" />
+                    <Text style={styles.amount}>Germinated</Text>
+                  </View>
+                )}
 
+                {this.userPlant.stage == "Sapling" && (
+                  <View style={styles.icon}>
+                    <MaterialCommunityIcons
+                      name="leaf"
+                      size={50}
+                      color="#51A746"
+                    />
+                    <Text style={styles.amount}>Sapling</Text>
+                  </View>
+                )}
+
+                {this.userPlant.stage == "Mature" && (
+                  <View style={styles.icon}>
+                    <Entypo name="tree" size={50} color="#51A746" />
+                    <Text style={styles.amount}>Mature</Text>
+                  </View>
+                )}
               </View>
             </View>
 
@@ -123,36 +132,46 @@ export default class Plant extends Component {
                   <View style={styles.careContainer}>
                     <View style={styles.careWrapper}>
                       <Text style={styles.careTitle}>Watering</Text>
-                      <Text style={styles.careAmount}>{this.plant.basicWatering}</Text>
+                      <Text style={styles.careAmount}>
+                        {this.plant.basicWatering}
+                      </Text>
                     </View>
 
                     <View style={styles.careWrapper}>
                       <Text style={styles.careTitle}>Potting</Text>
-                      <Text style={styles.careAmount}>{this.plant.basicPot}</Text>
+                      <Text style={styles.careAmount}>
+                        {this.plant.basicPot}
+                      </Text>
                     </View>
 
                     <View style={styles.careWrapper}>
                       <Text style={styles.careTitle}>Light</Text>
-                      <Text style={styles.careAmount}>{this.plant.basicLight}</Text>
+                      <Text style={styles.careAmount}>
+                        {this.plant.basicLight}
+                      </Text>
                     </View>
                   </View>
 
                   <View style={styles.careContainer}>
                     <View style={styles.careWrapper}>
                       <Text style={styles.careTitle}>Temperature</Text>
-                      <Text style={styles.careAmount}>{this.plant.basicTemp}</Text>
+                      <Text style={styles.careAmount}>
+                        {this.plant.basicTemp}
+                      </Text>
                     </View>
 
                     <View style={styles.careWrapper}>
-                      <Text style={styles.careTitle}>
-                        Fertilization
+                      <Text style={styles.careTitle}>Fertilization</Text>
+                      <Text style={styles.careAmount}>
+                        {this.plant.basicFertilizing}
                       </Text>
-                      <Text style={styles.careAmount}>{this.plant.basicFertilizing}</Text>
                     </View>
 
                     <View style={styles.careWrapper}>
                       <Text style={styles.careTitle}>Date of birth</Text>
-                      <Text style={styles.careAmount}>{new Date( this.userPlant.dob).toString()}</Text>
+                      <Text style={styles.careAmount}>
+                        {new Date(this.userPlant.dob).toString()}
+                      </Text>
                     </View>
                   </View>
                 </View>
@@ -161,9 +180,7 @@ export default class Plant extends Component {
 
             <View style={styles.aboutSection}>
               <Text style={styles.title}> About </Text>
-              <Text style={styles.subtitle}>
-                {this.plant.basicDescription}
-              </Text>
+              <Text style={styles.subtitle}>{this.plant.basicDescription}</Text>
             </View>
           </SafeAreaView>
         </ScrollView>
@@ -199,7 +216,7 @@ const styles = StyleSheet.create({
   careContainer: {
     flexDirection: "column",
     justifyContent: "flex-start",
-    width:400
+    width: 400,
   },
   careWrapper: {
     flexDirection: "column",
@@ -208,7 +225,7 @@ const styles = StyleSheet.create({
   },
   careFlexWrapper: {
     display: "flex",
-    flexDirection: "row",
+    flexDirection: "column",
     justifyContent: "space-between",
     paddingLeft: 25,
     paddingRight: 25,
@@ -280,11 +297,10 @@ const styles = StyleSheet.create({
     color: "white",
   },
   careAmount: {
+    width: 315,
     fontSize: 15,
-    fontWeight: "600",
     color: "white",
     paddingTop: 3,
-    
   },
   aboutSection: {
     paddingTop: 30,
@@ -292,8 +308,8 @@ const styles = StyleSheet.create({
   deleteButton: {
     marginTop: 10,
     padding: 10,
-    backgroundColor:'red',
-    borderRadius:2,
-    width:150
-  }
+    backgroundColor: "red",
+    borderRadius: 2,
+    width: 150,
+  },
 });
