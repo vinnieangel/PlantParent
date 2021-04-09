@@ -3,7 +3,7 @@ import { Modal } from "react-native";
 import { Pressable } from "react-native";
 import { Button } from "react-native";
 import { View, SafeAreaView, StyleSheet } from "react-native";
-import { TextInput } from "react-native-gesture-handler";
+import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import {
   Avatar,
   Title,
@@ -17,7 +17,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 export default class ProfileScreen extends Component {
   constructor(props) {
     super(props);
-    this.state = { modalVisible: false, setModalVisible: false };
+    this.state = { modalVisible1: false, modalVisible2: false };
   }
   render() {
     return (
@@ -66,38 +66,40 @@ export default class ProfileScreen extends Component {
           <Modal
             animationType="slide"
             transparent={true}
-            visible={this.state.modalVisible}
-            onRequestClose={() => {
-              setModalVisible(!modalVisible);
-            }}
+            visible={this.state.modalVisible1}
           >
             <View style={styles.changeInfo}>
               <View style={styles.modalView}>
                 <TextInput
+                  style={styles.textInput}
                   placeholder="New Email"
                   placeholderTextColor="#b5b5b5"
                   style={styles.input}
                   autoCapitalize="none"
                 />
                 <TextInput
-                  placeholder="Confirm the Email"
+                  style={styles.textInput}
+                  placeholder="Confirm New Email"
                   placeholderTextColor="#b5b5b5"
                   style={styles.input}
                   autoCapitalize="none"
                 />
-                <Button style={styles.modalButton}>Save</Button>
                 <Button
-                  style={styles.modalButton}
-                  onPress={() => this.setState({ modalVisible: false })}
-                >
-                  Cancel
-                </Button>
+                  title="Save"
+                  color="#f194ff"
+                  onPress={() => this.setState({ modalVisible1: false })}
+                />
+                <Button
+                  title="Cancel"
+                  color="#33FFF0"
+                  onPress={() => this.setState({ modalVisible1: false })}
+                />
               </View>
             </View>
           </Modal>
           <TouchableRipple
             onPress={() => {
-              this.setState({ modalVisible: true });
+              this.setState({ modalVisible1: true });
             }}
           >
             <View style={styles.settingItem}>
@@ -105,7 +107,48 @@ export default class ProfileScreen extends Component {
               <Text style={styles.settingItemText}>Change Email</Text>
             </View>
           </TouchableRipple>
-          <TouchableRipple onPress={() => {}}>
+
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={this.state.modalVisible2}
+          >
+            <View style={styles.changeInfo}>
+              <View style={styles.modalView}>
+                <TextInput
+                  style={styles.textInput}
+                  placeholder="New Password"
+                  secureTextEntry
+                  placeholderTextColor="#b5b5b5"
+                  style={styles.input}
+                  autoCapitalize="none"
+                />
+                <TextInput
+                  style={styles.textInput}
+                  placeholder="Confirm New Password"
+                  secureTextEntry
+                  placeholderTextColor="#b5b5b5"
+                  style={styles.input}
+                  autoCapitalize="none"
+                />
+                <Button
+                  title="Save"
+                  color="#f194ff"
+                  onPress={() => this.setState({ modalVisible2: false })}
+                />
+                <Button
+                  title="Cancel"
+                  color="#33FFF0"
+                  onPress={() => this.setState({ modalVisible2: false })}
+                />
+              </View>
+            </View>
+          </Modal>
+          <TouchableRipple
+            onPress={() => {
+              this.setState({ modalVisible2: true });
+            }}
+          >
             <View style={styles.settingItem}>
               <Ionicons name="lock-closed-outline" color="#FF6347" size={25} />
               <Text style={styles.settingItemText}>Change Password</Text>
@@ -164,8 +207,43 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 26,
   },
+  input: {
+    height: 50,
+    backgroundColor: "white",
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: "#b5b5b5",
+    marginBottom: 20,
+    color: "#383838",
+    paddingHorizontal: 10,
+  },
   modalButton: {
     backgroundColor: "white",
     color: "black",
+  },
+  textInput: {
+    borderBottomWidth: 1,
+    borderBottomColor: "#000000",
+  },
+  changeInfo: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
 });
