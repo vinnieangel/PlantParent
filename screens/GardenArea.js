@@ -2,24 +2,20 @@ import react from "react";
 import React, { Component } from "react";
 import { SafeAreaView } from "react-native";
 import { ScrollView, FlatList } from "react-native";
-import {Card} from 'react-native-elements';
-import {
-  StyleSheet,
-  View,
-  Image,
-  TouchableOpacity,
-  Text
-} from "react-native";
+import { Card } from "react-native-elements";
+import { StyleSheet, View, Image, TouchableOpacity, Text } from "react-native";
 import { SearchBar } from "react-native-elements";
 import { Searchbar } from "react-native-paper";
 
 export default class GardenArea extends React.Component {
-  dummyPlants = [{name: "plant1", img: require("../Images/p1.jpg")},
-  {name:"plant2", img:require("../Images/p2.jpg")}, 
-  {name:"plant3", img: require("../Images/p3.jpg")}, 
-  {name:"plant4", img: require("../Images/p4.jpg")}, 
-  {name:"plant5", img: require("../Images/p5.jpg")}, 
-  {name:"plant6", img: require("../Images/p6.jpg")}]
+  dummyPlants = [
+    { name: "plant1", img: require("../Images/p1.jpg") },
+    { name: "plant2", img: require("../Images/p2.jpg") },
+    { name: "plant3", img: require("../Images/p3.jpg") },
+    { name: "plant4", img: require("../Images/p4.jpg") },
+    { name: "plant5", img: require("../Images/p5.jpg") },
+    { name: "plant6", img: require("../Images/p6.jpg") },
+  ];
 
   userID = this.props.route.params.userID;
   state = {
@@ -125,7 +121,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",
     flex: 1,
-    alignItems:'center'
+    alignItems: "center",
   },
   title: {
     color: "#006400",
@@ -139,7 +135,7 @@ const styles = StyleSheet.create({
   },
   plantImage: {
     flex: 1,
-    height:100,
-    width:100
-}
+    height: 100,
+    width: 100,
+  },
 });
