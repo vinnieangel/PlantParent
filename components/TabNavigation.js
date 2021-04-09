@@ -4,7 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import GardenStack from "./GardenStack";
 import SearchArea from "../screens/SearchArea";
-import ProfileScreen from "../screens/Profile";
+import ProfileStack from "./ProfileStack";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import CalendarScreen from "../screens/CalendarArea";
 
@@ -43,8 +43,8 @@ export default class TabNavigation extends React.Component {
           name="Search Plants"
           children={() => <SearchArea userID={this.userID} />}
         />
-        <Tab.Screen name="Calendar" component={SearchArea} />
-        <Tab.Screen name="Profile" component={ProfileScreen} />
+        <Tab.Screen  name="Profile"
+          children={() => <ProfileStack userID={this.userID} />} />
       </Tab.Navigator>
     );
   }

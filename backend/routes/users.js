@@ -35,6 +35,10 @@ router.route('/login').post((req, res) => {
     }).catch(err=>res.status(400).json('Error' + err));
     })
 
+router.route('/delete').delete((req, res) => {
+    const userID = req.body.userID;
+    user.findOneAndRemove({_id:userID}).then(()=> res.status(200).json("Deleted!")).catch(err=> console.log("Error: "+err) )
+})
 
 
 module.exports = router; //do this for all routers

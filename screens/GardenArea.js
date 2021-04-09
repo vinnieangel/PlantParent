@@ -35,7 +35,7 @@ export default class GardenArea extends React.Component {
       else {
         let userPlants = [];
         for(let userPlantID of res) {
-          console.log('USER PLANT ID', userPlantID)
+          
           await fetch('https://plantparent506.herokuapp.com/userPlants/getPlant/'+userPlantID, {
             method:'GET',
             header: {
@@ -44,7 +44,7 @@ export default class GardenArea extends React.Component {
           }).then(async result => {
             return await result.json();
           }).then(result => {
-            console.log('RES', result)
+            
             userPlants.push(result)
           }).catch(err => console.log("Error: " + err))
         }
@@ -56,7 +56,7 @@ export default class GardenArea extends React.Component {
       
       let plants = [];
       for(let plant of this.state.userPlants) {
-        console.log('PLANT ID', plant.plantID)
+        
         await fetch('https://plantparent506.herokuapp.com/plants/getPlant/'+plant.plantID, {
           method:'GET',
           header: {
@@ -65,7 +65,7 @@ export default class GardenArea extends React.Component {
         }).then(async result => {
           return await result.json();
         }).then(result => {
-          console.log('RES2', result)
+          
           plants.push(result)
         }).catch(err => console.log("Error: " + err))
       }

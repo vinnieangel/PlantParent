@@ -10,6 +10,7 @@ import {
   Alert,
 } from "react-native";
 //import symbolicateStackTrace from "react-native/Libraries/Core/Devtools/symbolicateStackTrace";
+const fetch = require("node-fetch");
 
 export default class Login extends Component {
   constructor(props) {

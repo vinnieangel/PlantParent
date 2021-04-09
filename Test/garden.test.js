@@ -10,6 +10,23 @@ import { shallow, configure } from "enzyme";
 import Adapter from "enzyme-adapter-react-15";
 
 test("snapshot test of Garden component", () => {
-  const wrapper = shallow(<Garden />);
+  let route = {
+    params: {
+      userID: "60503726095b5333d0969cf8"
+    }
+  }
+  const wrapper = shallow(<Garden route={route}/>);
   expect(wrapper).toMatchSnapshot();
 });
+
+test("renders without crashing", () => {
+  let route = {
+    params: {
+      userID: "60503726095b5333d0969cf8"
+    }
+  }
+  const { debug, getByTestId, getByText, getByPlaceholderText } = render(
+    <Garden route={route}/>
+  );
+});
+

@@ -1,9 +1,7 @@
 import React, { useState, Component } from "react";
 import { Modal } from "react-native";
-import { Pressable } from "react-native";
 import { Button } from "react-native";
-import { View, SafeAreaView, StyleSheet } from "react-native";
-import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
+import { View, SafeAreaView, StyleSheet, TextInput, TouchableOpacity } from "react-native";
 import {
   Avatar,
   Title,
@@ -15,10 +13,28 @@ import {
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 export default class ProfileScreen extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { modalVisible1: false, modalVisible2: false };
+  
+  
+    userID = this.props.route.params.userID;
+    state = { modalVisible1: false, modalVisible2: false };
+  
+
+  async deleteAccount() {
+    await fetch('http://localhost:5000/users/delete', {
+      method:'DELETE',
+      headers: {
+        'Content-Type':'application/json'
+      },
+      body: JSON.stringify({
+        userID: this.userID
+      })
+    }).then(()=> {
+      this.props.navigation.navigate('Login');
+    }).catch(err => {
+      console.log("Error: "+err)
+    })
   }
+
   render() {
     return (
       <SafeAreaView style={styles.container}>
@@ -60,7 +76,17 @@ export default class ProfileScreen extends Component {
               Email Address
             </Text>
           </View>
+          <View style={styles.row}>
+            <Ionicons name="trash-outline" color="#777777" size={20} />
+            <TouchableOpacity style={{ marginLeft: 20 }} onPress ={()=> this.deleteAccount()}>
+              <Text style={{color: "#FF0000"}}>
+                Delete Account
+              </Text>
+            </TouchableOpacity>    
+          </View>
         </View>
+
+        
 
         <View style={styles.settingWrapper}>
           <Modal
