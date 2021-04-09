@@ -32,7 +32,7 @@ export default class SearchArea extends React.Component {
 
   async componentDidMount() {
     console.log('here')
-    await fetch('http://localhost:5000/plants/getAll', {
+    await fetch('https://plantparent506.herokuapp.com/plants/getAll', {
       method: 'GET',
       headers: {
         "Content-Type": "application/json",
@@ -66,7 +66,7 @@ export default class SearchArea extends React.Component {
       stage: this.state.selectedStage,
       dob: this.state.dob
     }))
-    await fetch('http://localhost:5000/userPlants/add', {
+    await fetch('https://plantparent506.herokuapp.com/userPlants/add', {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",
@@ -81,7 +81,7 @@ export default class SearchArea extends React.Component {
     }).then(async res => {
       return (await res.json());
     }).then(async res => {
-      await fetch('http://localhost:5000/gardens/add', {
+      await fetch('https://plantparent506.herokuapp.com/gardens/add', {
         method: 'PUT',
         headers: {
           "Content-Type": "application/json",

@@ -19,7 +19,7 @@ export default class Plant extends Component {
   plant = this.props.route.params.plant;
 
   async delete() {
-    await fetch('http://localhost:5000/gardens/delete', {
+    await fetch('https://plantparent506.herokuapp.com/gardens/delete', {
       method: 'DELETE',
       headers: {
         'Content-Type':'application/json'
@@ -29,7 +29,7 @@ export default class Plant extends Component {
         userPlantID : this.userPlant._id
       })
     }).then(async ()=> {
-      await fetch('http://localhost:5000/userPlants/delete', {
+      await fetch('https://plantparent506.herokuapp.com/userPlants/delete', {
         method:'DELETE',
         headers: {
           'Content-Type':'application/json'

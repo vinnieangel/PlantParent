@@ -18,7 +18,7 @@ export default class GardenArea extends React.Component {
   }
 
   async componentDidMount() {
-    await fetch('http://localhost:5000/gardens/get/'+this.userID, {
+    await fetch('https://plantparent506.herokuapp.com/gardens/get/'+this.userID, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -36,7 +36,7 @@ export default class GardenArea extends React.Component {
         let userPlants = [];
         for(let userPlantID of res) {
           console.log('USER PLANT ID', userPlantID)
-          await fetch('http://localhost:5000/userPlants/getPlant/'+userPlantID, {
+          await fetch('https://plantparent506.herokuapp.com/userPlants/getPlant/'+userPlantID, {
             method:'GET',
             header: {
               'Content-Type':'application/json'
@@ -57,7 +57,7 @@ export default class GardenArea extends React.Component {
       let plants = [];
       for(let plant of this.state.userPlants) {
         console.log('PLANT ID', plant.plantID)
-        await fetch('http://localhost:5000/plants/getPlant/'+plant.plantID, {
+        await fetch('https://plantparent506.herokuapp.com/plants/getPlant/'+plant.plantID, {
           method:'GET',
           header: {
             'Content-Type':'application/json'
