@@ -20,7 +20,7 @@ export default class ProfileScreen extends Component {
   
 
   async deleteAccount() {
-    await fetch('http://localhost:5000/users/delete', {
+    await fetch('https://plantparent506.herokuapp.com/users/delete', {
       method:'DELETE',
       headers: {
         'Content-Type':'application/json'
