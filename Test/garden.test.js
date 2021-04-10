@@ -19,6 +19,7 @@ test("snapshot test of Garden component", () => {
   expect(wrapper).toMatchSnapshot();
 });
 
+
 test("renders without crashing", () => {
   let route = {
     params: {
@@ -29,4 +30,4 @@ test("renders without crashing", () => {
     <Garden route={route}/>
   );
 });
-
+ 

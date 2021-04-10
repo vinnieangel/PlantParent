@@ -19,7 +19,7 @@ test("render Login input component properly", () => {
   expect(input).toBeDefined();
 });
 
-test("render password input component properly", () => {
+  test("render password input component properly", () => {
   const { debug, getByTestId, getByText, getByPlaceholderText } = render(
     <Login />
   );
@@ -51,7 +51,7 @@ test("snapshot test of Login component", () => {
   expect(wrapper).toMatchSnapshot();
 });
 
-test.only("gives invalid", () => {
+test("gives invalid", () => {
   const navigation = {
     navigate: ()=> {;}
   }
