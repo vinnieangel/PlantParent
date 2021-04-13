@@ -1,7 +1,14 @@
 import React, { useState, Component } from "react";
-import { Modal } from "react-native";
+import { Modal, useWindowDimensions } from "react-native";
 import { Button } from "react-native";
-import { View, SafeAreaView, StyleSheet, TextInput, TouchableOpacity } from "react-native";
+import {
+  View,
+  text,
+  SafeAreaView,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+} from "react-native";
 import {
   Avatar,
   Title,
@@ -13,28 +20,76 @@ import {
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 export default class ProfileScreen extends Component {
-  
-  
-    userID = this.props.route.params.userID;
-    state = { modalVisible1: false, modalVisible2: false };
-  
+  userID = this.props.route.params.userID;
+  state = {
+    modalVisible1: false,
+    modalVisible2: false,
+    username: "",
+    password: "",
+    confirmedUsername:"",
+    confirmedPassword:""
+  };
 
+  // fetches the server and deleted the account
   async deleteAccount() {
-    await fetch('https://plantparent506.herokuapp.com/users/delete', {
-      method:'DELETE',
+    await fetch("https://plantparent506.herokuapp.com/users/delete", {
+      method: "DELETE",
       headers: {
-        'Content-Type':'application/json'
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        userID: this.userID
-      })
-    }).then(()=> {
-      this.props.navigation.navigate('Login');
-    }).catch(err => {
-      console.log("Error: "+err)
+        userID: this.userID,
+      }),
     })
+      .then(() => {
+        this.props.navigation.navigate("Login");
+      })
+      .catch((err) => {
+        console.log("Error: " + err);
+      });
+  }
+  
+  
+  handleUsername = (text) => {
+    this.setState({ username: text });
+  };
+
+  handleConfirmedUsername = (text) => {
+    this.setState({ confirmedUsername: text });
+  };
+
+  checkIfEqual() {
+    console.log(this.state.username);
+    console.log(this.state.confirmedUsername);
+   
+    if(this.state.username === ""){
+      window.alert("Type in the new user name you prefer!");
+    }
+    else if (this.state.confirmedUsername === ""){
+      window.alert("Please confirm the new user name!");
+    } 
+    else{
+      if(this.state.username === this.state.confirmedUsername){ // POST to database
+        window.alert("So far so good!");
+      }
+      else{
+        window.alert("Confirming new user name failed.");
+      }
+    }
   }
 
+  handlePassword = (text) => {
+    this.setState({ password: text });
+  };
+
+  // async updateInfo(text) {
+  //   console.log(this.state.userInfo);
+  //   if(text === this.state.userInfo){
+  //     this.setState({confirmedUserInfo: text});
+  //   } else{
+  //     window.alert("Usernames do not match.");
+  //   }
+  // }
   render() {
     return (
       <SafeAreaView style={styles.container}>
@@ -78,15 +133,14 @@ export default class ProfileScreen extends Component {
           </View>
           <View style={styles.row}>
             <Ionicons name="trash-outline" color="#777777" size={20} />
-            <TouchableOpacity style={{ marginLeft: 20 }} onPress ={()=> this.deleteAccount()}>
-              <Text style={{color: "#FF0000"}}>
-                Delete Account
-              </Text>
-            </TouchableOpacity>    
+            <TouchableOpacity
+              style={{ marginLeft: 20 }}
+              onPress={() => this.deleteAccount()}
+            >
+              <Text style={{ color: "#FF0000" }}>Delete Account</Text>
+            </TouchableOpacity>
           </View>
         </View>
-
-        
 
         <View style={styles.settingWrapper}>
           <Modal
@@ -98,22 +152,24 @@ export default class ProfileScreen extends Component {
               <View style={styles.modalView}>
                 <TextInput
                   style={styles.textInput}
-                  placeholder="New Email"
+                  placeholder="New username"
                   placeholderTextColor="#b5b5b5"
                   style={styles.input}
                   autoCapitalize="none"
+                  onChangeText={this.handleUsername}
                 />
                 <TextInput
                   style={styles.textInput}
-                  placeholder="Confirm New Email"
+                  placeholder="Confirm username"
                   placeholderTextColor="#b5b5b5"
                   style={styles.input}
                   autoCapitalize="none"
+                  onChangeText={this.handleConfirmedUsername}
                 />
                 <Button
                   title="Save"
                   color="#f194ff"
-                  onPress={() => this.setState({ modalVisible1: false })}
+                  onPress={() => {this.setState({ modalVisible1: false }), this.checkIfEqual()}}
                 />
                 <Button
                   title="Cancel"
@@ -123,6 +179,7 @@ export default class ProfileScreen extends Component {
               </View>
             </View>
           </Modal>
+
           <TouchableRipple
             onPress={() => {
               this.setState({ modalVisible1: true });
@@ -130,7 +187,7 @@ export default class ProfileScreen extends Component {
           >
             <View style={styles.settingItem}>
               <Ionicons name="settings-outline" color="#FF6347" size={25} />
-              <Text style={styles.settingItemText}>Change Email</Text>
+              <Text style={styles.settingItemText}>Change Username</Text>
             </View>
           </TouchableRipple>
 
@@ -148,6 +205,7 @@ export default class ProfileScreen extends Component {
                   placeholderTextColor="#b5b5b5"
                   style={styles.input}
                   autoCapitalize="none"
+                  onChangeText={this.handlePassword}
                 />
                 <TextInput
                   style={styles.textInput}
