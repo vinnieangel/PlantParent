@@ -26,4 +26,14 @@ router.route('/delete').delete((req, res) => {
 
 })
 
+
+router.route('/editName').put((req, res) => {
+    let userPlantID = req.body.userPlantID;
+    let newName = req.body.newName;
+
+    userPlant.findOne({_id:userPlantID}).then((userPlant) => {
+        userPlant.givenName = newName; userPlant.save().then((userPlant)=> res.status(200).json(userPlant)).catch(err => console.log("Error: " + err))
+     }).catch(err => console.log("Error: "+ err))
+})
+
 module.exports = router; //do this for all routers

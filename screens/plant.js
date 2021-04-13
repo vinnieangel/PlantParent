@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -12,11 +12,24 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
+import { EvilIcons } from '@expo/vector-icons';
 
 export default class Plant extends Component {
-  userID = this.props.route.params.userID;
-  userPlant = this.props.route.params.userPlant;
-  plant = this.props.route.params.plant;
+ 
+
+  
+  
+     userID = this.props.route.params.userID;
+    userPlant = this.props.route.params.userPlant;
+     plant = this.props.route.params.plant;
+    
+  
+  state = {
+    givenName : this.userPlant.givenName
+  }
+  
+  
+  
 
   async delete() {
     await fetch("https://plantparent506.herokuapp.com/gardens/delete", {
@@ -47,6 +60,21 @@ export default class Plant extends Component {
       .catch((err) => console.log("Error: " + err));
   }
 
+  async editName(newName) {
+    console.log(newName)
+    await fetch("http://localhost:5000/userPlants/editName", { 
+      method: 'PUT',
+      headers: {
+        'Content-Type':'application/json'
+      },
+      body: JSON.stringify( {
+        userPlantID:this.userPlant._id,
+        newName: newName 
+      })
+    }).then(async res=> await res.json()).then(res => this.setState({givenName:res.givenName}))
+  }
+
+
   render() {
     return (
       <>
@@ -61,7 +89,15 @@ export default class Plant extends Component {
               </View>
               <View style={styles.descriptionWrapper}>
                 <View>
-                  <Text style={styles.title}>{this.userPlant.givenName}</Text>
+                  <View style ={{flex:1, flexDirection:'row'}}>
+                  <Text style={styles.title}>{this.state.givenName}</Text>
+                  <TouchableOpacity style ={{marginTop:15}} onPress ={()=>{
+                    let newName = prompt('Enter your plant\'s new given name here: ');
+                    console.log(newName)
+                    this.editName(newName)}}>
+                    <EvilIcons name="pencil" size={24} color="black"  />
+                  </TouchableOpacity>
+                  </View>
                 </View>
                 <View>
                   <Text style={styles.subtitle}>{this.plant.name}</Text>
