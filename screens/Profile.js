@@ -93,7 +93,15 @@ export default class ProfileScreen extends Component {
     this.setState({ confirmedUsername: text });
   };
 
-  checkIfEqual() {
+  handlePassword = (text) => {
+    this.setState({ password: text });
+  };
+
+  handleConfirmedPassword = (text) => {
+    this.setState({ confirmedPassword: text });
+  };
+
+  checkIfEqual1() {
     console.log(this.state.username);
     console.log(this.state.confirmedUsername);
 
@@ -104,16 +112,30 @@ export default class ProfileScreen extends Component {
     } else {
       if (this.state.username === this.state.confirmedUsername) {
         // POST to database
-        window.alert("So far so good!");
+        this.updateUsername();
       } else {
         window.alert("Confirming new user name failed.");
       }
     }
   }
 
-  handlePassword = (text) => {
-    this.setState({ password: text });
-  };
+  checkIfEqual2() {
+    console.log(this.state.password);
+    console.log(this.state.confirmedPassword);
+
+    if (this.state.password === "") {
+      window.alert("Type in the new password!");
+    } else if (this.state.confirmedPassword === "") {
+      window.alert("Please confirm the password!");
+    } else {
+      if (this.state.password === this.state.confirmedPassword) {
+        // POST to database
+        this.updatePassword();
+      } else {
+        window.alert("Confirming new password failed.");
+      }
+    }
+  }
 
   // async updateInfo(text) {
   //   console.log(this.state.userInfo);
@@ -204,7 +226,7 @@ export default class ProfileScreen extends Component {
                   color="#f194ff"
                   onPress={() => {
                     this.setState({ modalVisible1: false }),
-                      this.checkIfEqual();
+                      this.checkIfEqual1();
                   }}
                 />
                 <Button
@@ -250,11 +272,14 @@ export default class ProfileScreen extends Component {
                   placeholderTextColor="#b5b5b5"
                   style={styles.input}
                   autoCapitalize="none"
+                  onChangeText={this.handleConfirmedPassword}
                 />
                 <Button
                   title="Save"
                   color="#f194ff"
-                  onPress={() => this.setState({ modalVisible2: false })}
+                  onPress={() => {
+                    this.setState({ modalVisible2: false }), this.checkIfEqual2;
+                  }}
                 />
                 <Button
                   title="Cancel"
