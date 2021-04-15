@@ -44,4 +44,26 @@ router.route("/delete").delete((req, res) => {
     .catch((err) => console.log("Error: " + err));
 });
 
+//update username
+router.route("/updateUsername").post((req, res) => {
+  const userID = req.body.userID;
+  const newName = req.body.username;
+  user
+    .findOneAndUpdate({ _id: userID }, { username: newName })
+    .then(() => res.status(200).json("Username is Updated!"))
+    .catch((err) => console.log("Error: " + err));
+});
+
+//update password
+router.route("/updatePassword").post((req, res) => {
+  const userID = req.body.userID;
+  const newPassword = req.body.username;
+  user
+    .findOneAndUpdate({ _id: userID }, { password: newPassword })
+    .then(() =>
+      res.status(200).json("Password is Updated! Redirect to login screen")
+    )
+    .catch((err) => console.log("Error: " + err));
+});
+
 module.exports = router; //do this for all routers

@@ -26,8 +26,8 @@ export default class ProfileScreen extends Component {
     modalVisible2: false,
     username: "",
     password: "",
-    confirmedUsername:"",
-    confirmedPassword:""
+    confirmedUsername: "",
+    confirmedPassword: "",
   };
 
   // fetches the server and deleted the account
@@ -48,8 +48,43 @@ export default class ProfileScreen extends Component {
         console.log("Error: " + err);
       });
   }
-  
-  
+
+  async updateUsername() {
+    await fetch("https://plantparent506.herokuapp.com/users/updateUsername", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userID: this.props.route.params.userID,
+        username: this.confirmedUsername,
+      }),
+    })
+      .then(() => {})
+      .catch((err) => {
+        console.log("Error: " + err);
+      });
+  }
+
+  async updatePassword() {
+    await fetch("https://plantparent506.herokuapp.com/users/updatePassword", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userID: this.props.route.params.userID,
+        password: this.confirmedPassword,
+      }),
+    })
+      .then(() => {
+        this.props.navigation.navigate("Login");
+      })
+      .catch((err) => {
+        console.log("Error: " + err);
+      });
+  }
+
   handleUsername = (text) => {
     this.setState({ username: text });
   };
@@ -61,18 +96,16 @@ export default class ProfileScreen extends Component {
   checkIfEqual() {
     console.log(this.state.username);
     console.log(this.state.confirmedUsername);
-   
-    if(this.state.username === ""){
+
+    if (this.state.username === "") {
       window.alert("Type in the new user name you prefer!");
-    }
-    else if (this.state.confirmedUsername === ""){
+    } else if (this.state.confirmedUsername === "") {
       window.alert("Please confirm the new user name!");
-    } 
-    else{
-      if(this.state.username === this.state.confirmedUsername){ // POST to database
+    } else {
+      if (this.state.username === this.state.confirmedUsername) {
+        // POST to database
         window.alert("So far so good!");
-      }
-      else{
+      } else {
         window.alert("Confirming new user name failed.");
       }
     }
@@ -169,7 +202,10 @@ export default class ProfileScreen extends Component {
                 <Button
                   title="Save"
                   color="#f194ff"
-                  onPress={() => {this.setState({ modalVisible1: false }), this.checkIfEqual()}}
+                  onPress={() => {
+                    this.setState({ modalVisible1: false }),
+                      this.checkIfEqual();
+                  }}
                 />
                 <Button
                   title="Cancel"
