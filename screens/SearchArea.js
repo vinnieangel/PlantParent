@@ -119,12 +119,13 @@ export default class SearchArea extends React.Component {
     console.log(this.props);
     return (
       <SafeAreaView style={styles.container}>
-        <Searchbar
-          style={styles.searchBarContainer}
+        <TextInput
+          style={styles.newSearch}
           placeholder="Search"
+          placeholderTextColor="#828282"
           onChangeText={onChangeSearch}
-          value={search}
-        />
+          value={search}/>
+
         <View style={styles.listContainer}>
           <FlatList
             data={this.state.dummyPlants}
@@ -253,6 +254,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingTop: 40,
     marginBottom: 10,
+  },
+  newSearch:{
+    justifyContent: "center",
+    borderStyle:"solid",
+    borderRadius: 1,
+    borderColor: "gray",
+    margin: 25,
+    fontSize: 20,
   },
   plantImage: {
     flex: 1,
