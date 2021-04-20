@@ -107,8 +107,6 @@ export default class ProfileScreen extends Component {
   };
 
   checkIfEqual1() {
-    // console.log(this.state.username);
-    // console.log(this.state.confirmedUsername);
     if (this.state.username.length < 8) {
       window.alert("User name is too short. It must be at least 8 characters.");
     } else if (this.state.username === "") {
@@ -131,8 +129,6 @@ export default class ProfileScreen extends Component {
   }
 
   checkIfEqual2() {
-    console.log(this.state.password);
-    console.log(this.state.confirmedPassword);
 
     if (this.state.password === "") {
       this.state.confirmedPassword = "";
@@ -315,6 +311,7 @@ export default class ProfileScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "white",
   },
   userInfoSection: {
     paddingHorizontal: 30,
@@ -334,9 +331,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   infoBoxWrapper: {
-    borderBottomColor: "#dddddd",
     borderBottomWidth: 1,
-    borderTopColor: "#dddddd",
     borderTopWidth: 1,
     flexDirection: "row",
     height: 100,
@@ -346,7 +341,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  settingWrapper: {},
   settingItem: {
     flexDirection: "row",
     paddingVertical: 15,
