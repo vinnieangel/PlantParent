@@ -13,6 +13,8 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { EvilIcons } from '@expo/vector-icons';
+import Slider from '@react-native-community/slider';
+
 
 export default class Plant extends Component {
  
@@ -25,11 +27,26 @@ export default class Plant extends Component {
     
   
   state = {
-    givenName : this.userPlant.givenName
+    givenName : this.userPlant.givenName,
+    slider: 1
   }
   
   
   
+  componentDidMount() {
+    if (this.userPlant.stage == "Seed") {
+      this.setState({slider: 0})
+    }
+    else if (this.userPlant.stage == "Germinated") {
+      this.setState({slider: 1})
+    }
+    else if (this.userPlant.stage == "Sapling") {
+      this.setState({slider: 2})
+    }
+    else {
+      this.setState({slider: 3})
+    }
+  }
 
   async delete() {
     await fetch("https://plantparent506.herokuapp.com/gardens/delete", {
@@ -62,7 +79,7 @@ export default class Plant extends Component {
 
   async editName(newName) {
     console.log(newName)
-    await fetch("http://localhost:5000/userPlants/editName", { 
+    await fetch("https://plantparent506.herokuapp.com/userPlants/editName", { 
       method: 'PUT',
       headers: {
         'Content-Type':'application/json'
@@ -74,8 +91,38 @@ export default class Plant extends Component {
     }).then(async res=> await res.json()).then(res => this.setState({givenName:res.givenName}))
   }
 
+  async editStage(num) {
+    let newStage;
+    if (num == this.state.slider) {
+      return ;
+    } 
+    if (num == 0) {
+      newStage = "Seed";
+    }
+    else if (num == 1) {
+      newStage = "Germinated";
+    }
+    else if (num == 2) {
+      newStage = "Sapling";
+    }
+    else if (num == 3) {
+      newStage = "Mature";
+    }
+
+    await fetch("http://localhost:5000/userPlants/editStage", { 
+      method: 'PUT',
+      headers: {
+        'Content-Type':'application/json'
+      },
+      body: JSON.stringify( {
+        userPlantID:this.userPlant._id,
+        newStage: newStage 
+      })
+    }).then(async res=> await res.json()).then(res => {this.userPlant.stage = res.stage; this.setState({slider:num})})
+  }
 
   render() {
+
     return (
       <>
         <ScrollView style={styles.container}>
@@ -158,7 +205,16 @@ export default class Plant extends Component {
                     <Text style={styles.amount}>Mature</Text>
                   </View>
                 )}
+                
               </View>
+              <Slider
+                  style={{width: 200, height: 40}}
+                  minimumValue={0}
+                  maximumValue={3}
+                  step = {1}
+                  value = {this.state.slider}
+                  onSlidingComplete = {(val)=>this.editStage(val)}
+                />
             </View>
 
             <View stlye={styles.careShadow}>

@@ -36,4 +36,14 @@ router.route('/editName').put((req, res) => {
      }).catch(err => console.log("Error: "+ err))
 })
 
+router.route('/editStage').put((req, res) => {
+    let userPlantID = req.body.userPlantID;
+    let newStage = req.body.newStage;
+
+    userPlant.findOne({_id:userPlantID}).then((userPlant) => {
+        userPlant.stage = newStage; userPlant.save().then((userPlant)=> res.status(200).json(userPlant)).catch(err => console.log("Error: " + err))
+     }).catch(err => console.log("Error: "+ err))
+})
+
+
 module.exports = router; //do this for all routers
