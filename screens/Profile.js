@@ -82,6 +82,7 @@ export default class ProfileScreen extends Component {
     })
       .then(() => {
         console.log("inside update password");
+        console.log(this.state.confirmedPassword);
       })
       .catch((err) => {
         console.log("Error: " + err);
@@ -290,7 +291,6 @@ export default class ProfileScreen extends Component {
                 />
                 <Button
                   title="Cancel"
-                  color="#33FFF0"
                   onPress={() => this.setState({ modalVisible2: false })}
                 />
               </View>
