@@ -57,7 +57,7 @@ export default class ProfileScreen extends Component {
       },
       body: JSON.stringify({
         userID: this.props.route.params.userID,
-        username: this.confirmedUsername,
+        username: this.state.confirmedUsername,
       }),
     })
       .then(() => {})
@@ -74,11 +74,11 @@ export default class ProfileScreen extends Component {
       },
       body: JSON.stringify({
         userID: this.props.route.params.userID,
-        password: this.confirmedPassword,
+        password: this.state.confirmedPassword,
       }),
     })
       .then(() => {
-        this.props.navigation.navigate("Login");
+        console.log("inside update password");
       })
       .catch((err) => {
         console.log("Error: " + err);
@@ -99,11 +99,10 @@ export default class ProfileScreen extends Component {
 
   handleConfirmedPassword = (text) => {
     this.setState({ confirmedPassword: text });
+    console.log(this.state.confirmedPassword);
   };
 
   checkIfEqual1() {
-    console.log(this.state.username);
-    console.log(this.state.confirmedUsername);
 
     if (this.state.username === "") {
       window.alert("Type in the new user name you prefer!");
@@ -256,6 +255,8 @@ export default class ProfileScreen extends Component {
           >
             <View style={styles.changeInfo}>
               <View style={styles.modalView}>
+              <Text style={styles.modalTitle}> Change Password </Text>
+              <Text style={styles.textInputLabel}> New Password </Text>
                 <TextInput
                   style={styles.textInput}
                   placeholder="New Password"
@@ -264,6 +265,7 @@ export default class ProfileScreen extends Component {
                   autoCapitalize="none"
                   onChangeText={this.handlePassword}
                 />
+                <Text style={styles.textInputLabel}> Password </Text>
                 <TextInput
                   style={styles.textInput}
                   placeholder="Confirm New Password"
@@ -274,7 +276,6 @@ export default class ProfileScreen extends Component {
                 />
                 <Button
                   title="Save"
-                  color="#f194ff"
                   onPress={() => {
                     this.setState({ modalVisible2: false }), this.checkIfEqual2;
                   }}

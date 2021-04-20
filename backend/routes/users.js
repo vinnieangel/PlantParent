@@ -57,7 +57,7 @@ router.route("/updateUsername").post((req, res) => {
 //update password
 router.route("/updatePassword").post((req, res) => {
   const userID = req.body.userID;
-  const newPassword = req.body.username;
+  const newPassword = req.body.password;
   user
     .findOneAndUpdate({ _id: userID }, { password: newPassword })
     .then(() =>

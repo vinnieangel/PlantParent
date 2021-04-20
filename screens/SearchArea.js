@@ -203,7 +203,7 @@ export default class SearchArea extends React.Component {
                   <Picker.Item label="Mature" value="Mature" />
                 </Picker>
                 <Text style={{ marginTop: 100 }}>
-                  Select when your plant was born/bought/sown
+                  Plant Birthday
                 </Text>
                 <DateTimePicker
                   style={{ height: 100, width: 200, marginLeft: 90 }}
@@ -282,11 +282,11 @@ const styles = StyleSheet.create({
     },
   },
   textInput: {
-    padding: 5,
+    paddingLeft: 5,
     margin: 2,
     width: "100%",
-    height: "7%",
-    borderWidth: 2,
-    borderColor: "green",
+    height: 35,
+    borderWidth: .5,
+    borderColor: "gray",
   },
 });

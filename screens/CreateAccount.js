@@ -64,6 +64,7 @@ export default class CreateAccount extends Component {
         </View>
         <View style={styles.formContainer}>
           <View style={styles.container2}>
+            <Text style={styles.fieldsLabel}>Username or Email</Text>
             <TextInput
               placeholder="Enter your username or email"
               placeholderTextColor="rgba(29, 53, 87, .7)"
@@ -72,7 +73,7 @@ export default class CreateAccount extends Component {
                 this.setState({ username: text });
               }}
             />
-
+            <Text style={styles.fieldsLabel}> Password</Text>
             <TextInput
               placeholder="Enter your password"
               placeholderTextColor="rgba(29, 53, 87, .7)"
@@ -133,6 +134,9 @@ const styles = StyleSheet.create({
     opacity: 0.9,
     fontSize: 30,
   },
+  fieldsLabel:{
+    paddingBottom: 10,
+  },  
   input: {
     height: 50,
     backgroundColor: "white",
