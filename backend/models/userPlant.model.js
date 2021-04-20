@@ -19,10 +19,10 @@ const userPlantSchema = new Schema({
         required: true
     },
     wateringSchedule: {
-        type: String,
+        type: Schema.Types.ObjectId,
     },
     fertilizingSchedule: {
-        type: String,
+        type: Schema.Types.ObjectId,
     }
 });
 

@@ -207,17 +207,22 @@ export default class Plant extends Component {
                 )}
                 
               </View>
+            </View>
+            <View style = {{flex:1, alignItems: 'center', marginBottom:10}}>
+              <Text style = {{paddingBottom: 20, fontSize:10}}>
+                Pull the slider to edit your plant's stage!
+              </Text>
               <Slider
-                  style={{width: 200, height: 40}}
+                  style = {{width:200}}
                   minimumValue={0}
                   maximumValue={3}
                   step = {1}
                   value = {this.state.slider}
                   onSlidingComplete = {(val)=>this.editStage(val)}
                 />
-            </View>
+                </View>
 
-            <View stlye={styles.careShadow}>
+            <View style={styles.careShadow}>
               <View style={styles.careInfoFlex}>
                 <Text style={styles.careFont}>Care</Text>
                 <View style={styles.careFlexWrapper}>
@@ -326,7 +331,7 @@ const styles = StyleSheet.create({
   needFlexWrapper: {
     display: "flex",
     alignSelf: "center",
-    paddingBottom: 30,
+    paddingBottom: 20,
     paddingLeft: 25,
   },
   needContainer: {
@@ -343,6 +348,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: 70,
     height: 70,
+  },
+  slider: {
+    display: "flex",
+    alignItems: "center",
+    marginRight:300,
+    width: 300,
+    height: 40,
+
   },
   amount: {
     fontSize: 12,
