@@ -204,6 +204,7 @@ export default class ProfileScreen extends Component {
         </View>
 
         <View style={styles.settingWrapper}>
+          
           <Modal
             animationType="slide"
             transparent={true}
@@ -211,25 +212,25 @@ export default class ProfileScreen extends Component {
           >
             <View style={styles.changeInfo}>
               <View style={styles.modalView}>
+              <Text style={styles.modalTitle}> Change Username </Text>
+                <Text style={styles.textInputLabel}> Username </Text>
                 <TextInput
                   style={styles.textInput}
                   placeholder="New username"
                   placeholderTextColor="#b5b5b5"
-                  style={styles.input}
                   autoCapitalize="none"
                   onChangeText={this.handleUsername}
                 />
+                 <Text style={styles.textInputLabel}> Confirm username</Text>
                 <TextInput
                   style={styles.textInput}
                   placeholder="Confirm username"
                   placeholderTextColor="#b5b5b5"
-                  style={styles.input}
                   autoCapitalize="none"
                   onChangeText={this.handleConfirmedUsername}
                 />
                 <Button
                   title="Save"
-                  color="#f194ff"
                   onPress={() => {
                     this.setState({ modalVisible1: false }),
                       this.checkIfEqual1();
@@ -237,7 +238,6 @@ export default class ProfileScreen extends Component {
                 />
                 <Button
                   title="Cancel"
-                  color="#33FFF0"
                   onPress={() => this.setState({ modalVisible1: false })}
                 />
               </View>
@@ -269,7 +269,6 @@ export default class ProfileScreen extends Component {
                   placeholder="New Password"
                   secureTextEntry
                   placeholderTextColor="#b5b5b5"
-                  style={styles.input}
                   autoCapitalize="none"
                   onChangeText={this.handlePassword}
                 />
@@ -279,7 +278,6 @@ export default class ProfileScreen extends Component {
                   placeholder="Confirm New Password"
                   secureTextEntry
                   placeholderTextColor="#b5b5b5"
-                  style={styles.input}
                   autoCapitalize="none"
                   onChangeText={this.handleConfirmedPassword}
                 />
@@ -399,5 +397,33 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
+    borderRadius: 15,
+    padding: 25,
+    alignItems: "flex-start",
+  },
+  modalTitle: {
+    fontSize: 20,
+    paddingBottom: 20,
+    fontWeight: "bold",
+  },
+  textInput: {
+    width: 280,
+    height: 40,
+    backgroundColor: "white",
+    borderWidth: 0.5,
+    borderRadius: 10,
+    borderColor: "#b5b5b5",
+    marginBottom: 20,
+    color: "#383838",
+    paddingHorizontal: 10,
+  },
+  textInputLabel: {
+    paddingBottom: 10,
+  },
+  changeInfo: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
   },
 });
