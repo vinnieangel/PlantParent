@@ -42,6 +42,7 @@ export default class ProfileScreen extends Component {
       }),
     })
       .then(() => {
+        window.alert("The account has been deleted.");
         this.props.navigation.navigate("Login");
       })
       .catch((err) => {
@@ -50,6 +51,7 @@ export default class ProfileScreen extends Component {
   }
 
   async updateUsername() {
+    console.log(this.state.confirmedUsername);
     await fetch("https://plantparent506.herokuapp.com/users/updateUsername", {
       method: "POST",
       headers: {
@@ -57,7 +59,7 @@ export default class ProfileScreen extends Component {
       },
       body: JSON.stringify({
         userID: this.props.route.params.userID,
-        username: this.confirmedUsername,
+        username: this.state.confirmedUsername,
       }),
     })
       .then(() => {})
@@ -67,6 +69,7 @@ export default class ProfileScreen extends Component {
   }
 
   async updatePassword() {
+    console.log(this.state.confirmedPassword);
     await fetch("https://plantparent506.herokuapp.com/users/updatePassword", {
       method: "POST",
       headers: {
@@ -74,11 +77,12 @@ export default class ProfileScreen extends Component {
       },
       body: JSON.stringify({
         userID: this.props.route.params.userID,
-        password: this.confirmedPassword,
+        password: this.state.confirmedPassword,
       }),
     })
       .then(() => {
-        this.props.navigation.navigate("Login");
+        console.log("inside update password");
+        console.log(this.state.confirmedPassword);
       })
       .catch((err) => {
         console.log("Error: " + err);
@@ -99,21 +103,28 @@ export default class ProfileScreen extends Component {
 
   handleConfirmedPassword = (text) => {
     this.setState({ confirmedPassword: text });
+    console.log(this.state.confirmedPassword);
   };
 
   checkIfEqual1() {
-    console.log(this.state.username);
-    console.log(this.state.confirmedUsername);
-
-    if (this.state.username === "") {
+    // console.log(this.state.username);
+    // console.log(this.state.confirmedUsername);
+    if (this.state.username.length < 8) {
+      window.alert("User name is too short. It must be at least 8 characters.");
+    } else if (this.state.username === "") {
+      this.state.confirmedUsername = "";
       window.alert("Type in the new user name you prefer!");
     } else if (this.state.confirmedUsername === "") {
+      this.state.username = "";
       window.alert("Please confirm the new user name!");
     } else {
       if (this.state.username === this.state.confirmedUsername) {
         // POST to database
         this.updateUsername();
+        window.alert("New user name is updated.");
       } else {
+        this.state.username = "";
+        this.state.confirmedUsername = "";
         window.alert("Confirming new user name failed.");
       }
     }
@@ -124,27 +135,23 @@ export default class ProfileScreen extends Component {
     console.log(this.state.confirmedPassword);
 
     if (this.state.password === "") {
+      this.state.confirmedPassword = "";
       window.alert("Type in the new password!");
     } else if (this.state.confirmedPassword === "") {
+      this.state.password = "";
       window.alert("Please confirm the password!");
     } else {
       if (this.state.password === this.state.confirmedPassword) {
         // POST to database
         this.updatePassword();
+        window.alert("New password is updated.");
       } else {
+        this.state.password = "";
+        this.state.confirmedPassword = "";
         window.alert("Confirming new password failed.");
       }
     }
   }
-
-  // async updateInfo(text) {
-  //   console.log(this.state.userInfo);
-  //   if(text === this.state.userInfo){
-  //     this.setState({confirmedUserInfo: text});
-  //   } else{
-  //     window.alert("Usernames do not match.");
-  //   }
-  // }
   render() {
     return (
       <SafeAreaView style={styles.container}>
@@ -198,6 +205,7 @@ export default class ProfileScreen extends Component {
         </View>
 
         <View style={styles.settingWrapper}>
+          
           <Modal
             animationType="slide"
             transparent={true}
@@ -205,7 +213,7 @@ export default class ProfileScreen extends Component {
           >
             <View style={styles.changeInfo}>
               <View style={styles.modalView}>
-                <Text style={styles.modalTitle}> Change Username </Text>
+              <Text style={styles.modalTitle}> Change Username </Text>
                 <Text style={styles.textInputLabel}> Username </Text>
                 <TextInput
                   style={styles.textInput}
@@ -214,16 +222,15 @@ export default class ProfileScreen extends Component {
                   autoCapitalize="none"
                   onChangeText={this.handleUsername}
                 />
-                <Text style={styles.textInputLabel}> Confirm username</Text>
+                 <Text style={styles.textInputLabel}> Confirm username</Text>
                 <TextInput
                   style={styles.textInput}
-                  placeholder="Username"
+                  placeholder="Confirm username"
                   placeholderTextColor="#b5b5b5"
                   autoCapitalize="none"
                   onChangeText={this.handleConfirmedUsername}
                 />
                 <Button
-                  style={styles.buttonStyle}
                   title="Save"
                   onPress={() => {
                     this.setState({ modalVisible1: false }),
@@ -256,6 +263,8 @@ export default class ProfileScreen extends Component {
           >
             <View style={styles.changeInfo}>
               <View style={styles.modalView}>
+              <Text style={styles.modalTitle}> Change Password </Text>
+              <Text style={styles.textInputLabel}> New Password </Text>
                 <TextInput
                   style={styles.textInput}
                   placeholder="New Password"
@@ -264,6 +273,7 @@ export default class ProfileScreen extends Component {
                   autoCapitalize="none"
                   onChangeText={this.handlePassword}
                 />
+                <Text style={styles.textInputLabel}> Password </Text>
                 <TextInput
                   style={styles.textInput}
                   placeholder="Confirm New Password"
@@ -274,9 +284,9 @@ export default class ProfileScreen extends Component {
                 />
                 <Button
                   title="Save"
-                  color="#f194ff"
                   onPress={() => {
-                    this.setState({ modalVisible2: false }), this.checkIfEqual2;
+                    this.setState({ modalVisible2: false }),
+                      this.checkIfEqual2();
                   }}
                 />
                 <Button
@@ -336,6 +346,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  settingWrapper: {},
   settingItem: {
     flexDirection: "row",
     paddingVertical: 15,
@@ -362,18 +373,22 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     color: "black",
   },
-  modalTitle: {
-    fontSize: 20,
-    paddingBottom: 20,
-    fontWeight: "bold",
+  textInput: {
+    borderBottomWidth: 1,
+    borderBottomColor: "#000000",
   },
-
+  changeInfo: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
   modalView: {
     margin: 20,
     backgroundColor: "white",
-    borderRadius: 15,
-    padding: 25,
-    alignItems: "flex-start",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -382,6 +397,14 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
+    borderRadius: 15,
+    padding: 25,
+    alignItems: "flex-start",
+  },
+  modalTitle: {
+    fontSize: 20,
+    paddingBottom: 20,
+    fontWeight: "bold",
   },
   textInput: {
     width: 280,
