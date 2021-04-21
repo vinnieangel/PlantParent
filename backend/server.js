@@ -27,6 +27,8 @@ const userPlantsRouter = require('./routes/userPlants');
 app.use('/userPlants', userPlantsRouter);
 const gardensRouter = require('./routes/gardens');
 app.use('/gardens', gardensRouter);
+const wateringScheduleRouter = require('./routes/wateringSchedule');
+app.use('/ws', wateringScheduleRouter);
 app.listen(port, ()=> {
     console.log(`Server is running on port ${port}`);
 });
