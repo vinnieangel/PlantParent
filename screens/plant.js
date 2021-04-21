@@ -396,6 +396,7 @@ const styles = StyleSheet.create({
     textAlign: "left",
     fontSize: 15,
     color: "#515151",
+    paddingLeft: 8,
   },
   careTitle: {
     fontSize: 12,
