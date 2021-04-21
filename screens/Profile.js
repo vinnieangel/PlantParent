@@ -81,8 +81,7 @@ export default class ProfileScreen extends Component {
       }),
     })
       .then(() => {
-        console.log("inside update password");
-        console.log(this.state.confirmedPassword);
+        this.props.navigation.navigate("Login");
       })
       .catch((err) => {
         console.log("Error: " + err);
@@ -103,12 +102,15 @@ export default class ProfileScreen extends Component {
 
   handleConfirmedPassword = (text) => {
     this.setState({ confirmedPassword: text });
-    console.log(this.state.confirmedPassword);
   };
 
   checkIfEqual1() {
     if (this.state.username.length < 8) {
-      window.alert("User name is too short. It must be at least 8 characters.");
+      this.state.username = "";
+      this.state.confirmedUsername = "";
+      window.alert(
+        "New user name is too short. It must be at least 8 characters."
+      );
     } else if (this.state.username === "") {
       this.state.confirmedUsername = "";
       window.alert("Type in the new user name you prefer!");
@@ -129,8 +131,13 @@ export default class ProfileScreen extends Component {
   }
 
   checkIfEqual2() {
-
-    if (this.state.password === "") {
+    if (this.state.password.length < 8) {
+      this.state.password = "";
+      this.state.confirmedPassword = "";
+      window.alert(
+        "New password is too short. It must be at least 8 characters."
+      );
+    } else if (this.state.password === "") {
       this.state.confirmedPassword = "";
       window.alert("Type in the new password!");
     } else if (this.state.confirmedPassword === "") {
@@ -140,7 +147,7 @@ export default class ProfileScreen extends Component {
       if (this.state.password === this.state.confirmedPassword) {
         // POST to database
         this.updatePassword();
-        window.alert("New password is updated.");
+        window.alert("New password is updated. Redirected to Login screen.");
       } else {
         this.state.password = "";
         this.state.confirmedPassword = "";
@@ -189,19 +196,9 @@ export default class ProfileScreen extends Component {
               Email Address
             </Text>
           </View>
-          <View style={styles.row}>
-            <Ionicons name="trash-outline" color="#777777" size={20} />
-            <TouchableOpacity
-              style={{ marginLeft: 20 }}
-              onPress={() => this.deleteAccount()}
-            >
-              <Text style={{ color: "#FF0000" }}>Delete Account</Text>
-            </TouchableOpacity>
-          </View>
         </View>
 
         <View style={styles.settingWrapper}>
-          
           <Modal
             animationType="slide"
             transparent={true}
@@ -209,7 +206,7 @@ export default class ProfileScreen extends Component {
           >
             <View style={styles.changeInfo}>
               <View style={styles.modalView}>
-              <Text style={styles.modalTitle}> Change Username </Text>
+                <Text style={styles.modalTitle}> Change Username </Text>
                 <Text style={styles.textInputLabel}> Username </Text>
                 <TextInput
                   style={styles.textInput}
@@ -218,7 +215,7 @@ export default class ProfileScreen extends Component {
                   autoCapitalize="none"
                   onChangeText={this.handleUsername}
                 />
-                 <Text style={styles.textInputLabel}> Confirm username</Text>
+                <Text style={styles.textInputLabel}> Confirm username</Text>
                 <TextInput
                   style={styles.textInput}
                   placeholder="Confirm username"
@@ -259,8 +256,8 @@ export default class ProfileScreen extends Component {
           >
             <View style={styles.changeInfo}>
               <View style={styles.modalView}>
-              <Text style={styles.modalTitle}> Change Password </Text>
-              <Text style={styles.textInputLabel}> New Password </Text>
+                <Text style={styles.modalTitle}> Change Password </Text>
+                <Text style={styles.textInputLabel}> New Password </Text>
                 <TextInput
                   style={styles.textInput}
                   placeholder="New Password"
@@ -300,6 +297,16 @@ export default class ProfileScreen extends Component {
             <View style={styles.settingItem}>
               <Ionicons name="lock-closed-outline" color="#FF6347" size={25} />
               <Text style={styles.settingItemText}>Change Password</Text>
+            </View>
+          </TouchableRipple>
+          <TouchableRipple
+            onPress={() => {
+              this.deleteAccount();
+            }}
+          >
+            <View style={styles.settingItem}>
+              <Ionicons name="trash-outline" color="#FF6347" size={25} />
+              <Text style={styles.settingItemText}>Delete Account</Text>
             </View>
           </TouchableRipple>
         </View>
