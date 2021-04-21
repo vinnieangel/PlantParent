@@ -370,7 +370,8 @@ const styles = StyleSheet.create({
   },
   plantImage: {
     flex: 1,
-    justifyContent: "flex-start",
+    alignItems: "center",
+    justifyContent: "center",
   },
   imageContainer: {
     width: 150,
