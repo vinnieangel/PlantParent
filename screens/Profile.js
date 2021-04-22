@@ -24,6 +24,7 @@ export default class ProfileScreen extends Component {
   state = {
     modalVisible1: false,
     modalVisible2: false,
+    modalVisible3: false,
     username: "",
     password: "",
     confirmedUsername: "",
@@ -155,44 +156,23 @@ export default class ProfileScreen extends Component {
       }
     }
   }
+
   render() {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.userInfoSection}>
-          <View style={{ flexDirection: "row", marginTop: 15 }}>
-            <Avatar.Image
-              source={{
-                uri: "https://pngimg.com/uploads/minions/minions_PNG25.png",
-              }}
-              size={80}
-            />
-            <View style={{ marginLeft: 20 }}>
-              <Title
-                style={[
-                  styles.title,
-                  {
-                    marginTop: 15,
-                    marginBottom: 5,
-                  },
-                ]}
-              >
-                Name
-              </Title>
-              <Caption style={styles.caption}>User ID</Caption>
-            </View>
+          <View style={styles.row}>
+            <Ionicons name="person-outline" color="#777777" size={25} />
+            <Text style={{ color: "#777777", marginLeft: 20, fontSize: 20 }}>
+              Name
+            </Text>
           </View>
         </View>
 
         <View style={styles.userInfoSection}>
           <View style={styles.row}>
-            <Ionicons name="flag-outline" color="#777777" size={20} />
-            <Text style={{ color: "#777777", marginLeft: 20 }}>
-              Current Location
-            </Text>
-          </View>
-          <View style={styles.row}>
-            <Ionicons name="mail-outline" color="#777777" size={20} />
-            <Text style={{ color: "#777777", marginLeft: 20 }}>
+            <Ionicons name="mail-outline" color="#777777" size={30} />
+            <Text style={{ color: "#777777", marginLeft: 20, fontSize: 20 }}>
               Email Address
             </Text>
           </View>
@@ -299,9 +279,34 @@ export default class ProfileScreen extends Component {
               <Text style={styles.settingItemText}>Change Password</Text>
             </View>
           </TouchableRipple>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={this.state.modalVisible3}
+          >
+            <View style={styles.changeInfo}>
+              <View style={styles.modalView}>
+                <Text style={styles.modalTitle}>
+                  {" "}
+                  Do you really want to delete your acccount?{" "}
+                </Text>
+                <Button
+                  title="Yes"
+                  onPress={() => {
+                    this.setState({ modalVisible3: false }),
+                      this.deleteAccount();
+                  }}
+                />
+                <Button
+                  title="Cancel"
+                  onPress={() => this.setState({ modalVisible3: false })}
+                />
+              </View>
+            </View>
+          </Modal>
           <TouchableRipple
             onPress={() => {
-              this.deleteAccount();
+              this.setState({ modalVisible3: true });
             }}
           >
             <View style={styles.settingItem}>
@@ -335,7 +340,7 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: "row",
-    marginBottom: 10,
+    marginTop: 10,
   },
   infoBoxWrapper: {
     borderBottomWidth: 1,

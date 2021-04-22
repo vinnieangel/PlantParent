@@ -5,7 +5,9 @@ let user = require("../models/user.model");
 router.route("/createAccount").post((req, res) => {
   const username = req.body.username;
   const password = req.body.password;
-  const newUser = new user({ username, password });
+  const preferred_name = req.body.preferred_name;
+  const email = req.body.email;
+  const newUser = new user({ username, password, preferred_name, email });
 
   newUser
     .save()

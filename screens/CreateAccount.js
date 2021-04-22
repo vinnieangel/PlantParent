@@ -16,6 +16,8 @@ export default class CreateAccount extends Component {
     this.state = {
       username: "",
       password: "",
+      preferred_name: "",
+      email: "",
     };
   }
 
@@ -30,6 +32,8 @@ export default class CreateAccount extends Component {
       body: JSON.stringify({
         username: this.state.username,
         password: this.state.password,
+        preferred_name: this.state.preferred_name,
+        email: this.state.email,
       }),
     }).then(async (res) => {
       let response = await res.json();
@@ -45,7 +49,20 @@ export default class CreateAccount extends Component {
       }
     });
   }
-
+  checkFields() {
+    if (
+      this.username == "" ||
+      this.password == "" ||
+      this.state.preferred_name == "" ||
+      this.email == ""
+    ) {
+      window.alert("All feilds must be filled!");
+    } else if (this.state.password.length < 8) {
+      window.alert("Password should be at least 8 characters long!");
+    } else {
+      this.createAccount();
+    }
+  }
   render() {
     return (
       <View style={styles.container}>
@@ -84,11 +101,29 @@ export default class CreateAccount extends Component {
               }}
             />
 
+            <TextInput
+              placeholder="Enter your preferred name"
+              placeholderTextColor="rgba(29, 53, 87, .7)"
+              style={styles.input}
+              onChangeText={(text) => {
+                this.setState({ preferred_name: text });
+              }}
+            />
+
+            <TextInput
+              placeholder="Enter email"
+              placeholderTextColor="rgba(29, 53, 87, .7)"
+              style={styles.input}
+              onChangeText={(text) => {
+                this.setState({ email: text });
+              }}
+            />
+
             <TouchableOpacity style={styles.buttonContainer}>
               <Text
                 testID="button1"
                 style={styles.buttonText}
-                onPress={() => this.createAccount()}
+                onPress={() => this.checkFields()}
               >
                 Create Account
               </Text>
@@ -134,9 +169,9 @@ const styles = StyleSheet.create({
     opacity: 0.9,
     fontSize: 30,
   },
-  fieldsLabel:{
+  fieldsLabel: {
     paddingBottom: 10,
-  },  
+  },
   input: {
     height: 50,
     backgroundColor: "white",
