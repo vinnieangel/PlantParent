@@ -9,6 +9,11 @@ router.route('/create').post((req, res) => {
     newWS.save().then ((saved) => res.status(200).json({WSID:saved._id})).catch(err => res.status(400).json("Error: "+err));
 })
 
+router.route('/get/:WSID').get((req, res) => {
+    const WSID = req.params.WSID;
+    wS.findOne({_id:WSID}).then(obj => {console.log(obj); res.status(200).json(obj)}).catch(err=> console.log("Error: " + err))
+})
+
 router.route('/editLastWatered').put((req, res) => {
     const WSID = req.body.WSID;
     const newLastWatered = req.body.newLastWatered;
