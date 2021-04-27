@@ -12,6 +12,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
+
 import { EvilIcons } from "@expo/vector-icons";
 import Slider from "@react-native-community/slider";
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -229,14 +230,16 @@ export default class Plant extends Component {
                   </View>
                 </View>
                 <View>
-                  <Text style={styles.subtitle}>{this.plant.name}</Text>
+                  <Text style={styles.plantName}>{this.plant.name}</Text>
                 </View>
-                <View>
+                <View style={styles.deleteButtonWrapper}>
                   <TouchableOpacity
                     style={styles.deleteButton}
                     onPress={() => this.delete()}
                   >
-                    <Text style={{ color: "white" }}>Delete from garden</Text>
+                    <Text style={{ textAlign: "center", color: "white" }}>
+                      Delete from garden
+                    </Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -257,7 +260,7 @@ export default class Plant extends Component {
                     <MaterialCommunityIcons
                       name="seed"
                       size={50}
-                      color="#51A746"
+                      color="#2B614A"
                     />
                     <Text style={styles.amount}>Seed</Text>
                   </View>
@@ -265,7 +268,7 @@ export default class Plant extends Component {
 
                 {this.userPlant.stage == "Germinated" && (
                   <View style={styles.icon}>
-                    <FontAwesome5 name="seedling" size={50} color="#51A746" />
+                    <FontAwesome5 name="seedling" size={50} color="#2B614A" />
                     <Text style={styles.amount}>Germinated</Text>
                   </View>
                 )}
@@ -275,7 +278,7 @@ export default class Plant extends Component {
                     <MaterialCommunityIcons
                       name="leaf"
                       size={50}
-                      color="#417B39"
+                      color="#2B614A"
                     />
                     <Text style={styles.amount}>Sapling</Text>
                   </View>
@@ -283,15 +286,17 @@ export default class Plant extends Component {
 
                 {this.userPlant.stage == "Mature" && (
                   <View style={styles.icon}>
-                    <Entypo name="tree" size={50} color="#51A746" />
+                    <Entypo name="tree" size={50} color="#2B614A" />
                     <Text style={styles.amount}>Mature</Text>
                   </View>
                 )}
               </View>
             </View>
             <View style={{ flex: 1, alignItems: "center", marginBottom: 10 }}>
-              <Text style={{ paddingBottom: 20, fontSize: 10 }}>
-                Pull the slider to edit your plant's stage!
+              <Text
+                style={{ paddingBottom: 10, fontSize: 15, color: "#515151" }}
+              >
+                Pull the slider to set your plant's stage
               </Text>
               <Slider
                 style={{ width: 200 }}
@@ -570,7 +575,6 @@ const styles = StyleSheet.create({
   },
   title: {
     paddingTop: 20,
-    paddingLeft: 5,
     fontFamily: "Helvetica",
     fontSize: 20,
     color: "#515151",
@@ -601,14 +605,15 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: "#417B39",
     fontSize: 15,
-    color:"white",
+    color: "white",
   },
   deleteButton: {
-    marginTop: 10,
     padding: 10,
-    backgroundColor: "red",
-    borderRadius: 2,
-    width: 150,
+    backgroundColor: "#7E1919",
+    borderRadius: 10,
+  },
+  deleteButtonWrapper:{
+    paddingTop: 10,
   },
   addButton: {
     margin: 10,
@@ -617,4 +622,7 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     width: 200,
   },
+  plantName:{
+    
+  }
 });
