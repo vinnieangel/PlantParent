@@ -124,7 +124,8 @@ export default class SearchArea extends React.Component {
           placeholder="Search"
           placeholderTextColor="#828282"
           onChangeText={onChangeSearch}
-          value={search}/>
+          value={search}
+        />
 
         <View style={styles.listContainer}>
           <FlatList
@@ -203,9 +204,7 @@ export default class SearchArea extends React.Component {
                   <Picker.Item label="Sapling" value="Sapling" />
                   <Picker.Item label="Mature" value="Mature" />
                 </Picker>
-                <Text style={{ marginTop: 100 }}>
-                  Plant Birthday
-                </Text>
+                <Text style={{ marginTop: 100 }}>Plant Birthday</Text>
                 <DateTimePicker
                   style={{ height: 100, width: 200, marginLeft: 90 }}
                   testID="dateTimePicker"
@@ -255,9 +254,9 @@ const styles = StyleSheet.create({
     paddingTop: 40,
     marginBottom: 10,
   },
-  newSearch:{
+  newSearch: {
     justifyContent: "center",
-    borderStyle:"solid",
+    borderStyle: "solid",
     borderRadius: 1,
     borderColor: "gray",
     margin: 25,
@@ -295,7 +294,7 @@ const styles = StyleSheet.create({
     margin: 2,
     width: "100%",
     height: 35,
-    borderWidth: .5,
+    borderWidth: 0.5,
     borderColor: "gray",
   },
 });

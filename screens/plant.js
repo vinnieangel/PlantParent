@@ -12,39 +12,28 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
-import { EvilIcons } from '@expo/vector-icons';
-import Slider from '@react-native-community/slider';
-
+import { EvilIcons } from "@expo/vector-icons";
+import Slider from "@react-native-community/slider";
 
 export default class Plant extends Component {
- 
+  userID = this.props.route.params.userID;
+  userPlant = this.props.route.params.userPlant;
+  plant = this.props.route.params.plant;
 
-  
-  
-     userID = this.props.route.params.userID;
-    userPlant = this.props.route.params.userPlant;
-     plant = this.props.route.params.plant;
-    
-  
   state = {
-    givenName : this.userPlant.givenName,
-    slider: 1
-  }
-  
-  
-  
+    givenName: this.userPlant.givenName,
+    slider: 1,
+  };
+
   componentDidMount() {
     if (this.userPlant.stage == "Seed") {
-      this.setState({slider: 0})
-    }
-    else if (this.userPlant.stage == "Germinated") {
-      this.setState({slider: 1})
-    }
-    else if (this.userPlant.stage == "Sapling") {
-      this.setState({slider: 2})
-    }
-    else {
-      this.setState({slider: 3})
+      this.setState({ slider: 0 });
+    } else if (this.userPlant.stage == "Germinated") {
+      this.setState({ slider: 1 });
+    } else if (this.userPlant.stage == "Sapling") { 
+      this.setState({ slider: 2 });
+    } else {
+      this.setState({ slider: 3 });
     }
   }
 
@@ -78,51 +67,54 @@ export default class Plant extends Component {
   }
 
   async editName(newName) {
-    console.log(newName)
-    await fetch("https://plantparent506.herokuapp.com/userPlants/editName", { 
-      method: 'PUT',
+    console.log(newName);
+    await fetch("https://plantparent506.herokuapp.com/userPlants/editName", {
+      method: "PUT",
       headers: {
-        'Content-Type':'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify( {
-        userPlantID:this.userPlant._id,
-        newName: newName 
-      })
-    }).then(async res=> await res.json()).then(res => this.setState({givenName:res.givenName}))
+      body: JSON.stringify({
+        userPlantID: this.userPlant._id,
+        newName: newName,
+      }),
+    })
+      .then(async (res) => await res.json())
+      .then((res) => this.setState({ givenName: res.givenName }));
   }
 
   async editStage(num) {
     let newStage;
     if (num == this.state.slider) {
-      return ;
-    } 
+      return;
+    }
     if (num == 0) {
       newStage = "Seed";
-    }
-    else if (num == 1) {
+    } else if (num == 1) {
       newStage = "Germinated";
-    }
-    else if (num == 2) {
+    } else if (num == 2) {
       newStage = "Sapling";
-    }
-    else if (num == 3) {
+    } else if (num == 3) {
       newStage = "Mature";
     }
 
-    await fetch("http://localhost:5000/userPlants/editStage", { 
-      method: 'PUT',
+    await fetch("http://localhost:5000/userPlants/editStage", {
+      method: "PUT",
       headers: {
-        'Content-Type':'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify( {
-        userPlantID:this.userPlant._id,
-        newStage: newStage 
-      })
-    }).then(async res=> await res.json()).then(res => {this.userPlant.stage = res.stage; this.setState({slider:num})})
+      body: JSON.stringify({
+        userPlantID: this.userPlant._id,
+        newStage: newStage,
+      }),
+    })
+      .then(async (res) => await res.json())
+      .then((res) => {
+        this.userPlant.stage = res.stage;
+        this.setState({ slider: num });
+      });
   }
 
   render() {
-
     return (
       <>
         <ScrollView style={styles.container}>
@@ -136,14 +128,20 @@ export default class Plant extends Component {
               </View>
               <View style={styles.descriptionWrapper}>
                 <View>
-                  <View style ={{flex:1, flexDirection:'row'}}>
-                  <Text style={styles.title}>{this.state.givenName}</Text>
-                  <TouchableOpacity style ={{marginTop:15}} onPress ={()=>{
-                    let newName = prompt('Enter your plant\'s new given name here: ');
-                    console.log(newName)
-                    this.editName(newName)}}>
-                    <EvilIcons name="pencil" size={24} color="black"  />
-                  </TouchableOpacity>
+                  <View style={{ flex: 1, flexDirection: "row" }}>
+                    <Text style={styles.title}>{this.state.givenName}</Text>
+                    <TouchableOpacity
+                      style={{ marginTop: 15 }}
+                      onPress={() => {
+                        let newName = prompt(
+                          "Enter your plant's new given name here: "
+                        );
+                        console.log(newName);
+                        this.editName(newName);
+                      }}
+                    >
+                      <EvilIcons name="pencil" size={24} color="black" />
+                    </TouchableOpacity>
                   </View>
                 </View>
                 <View>
@@ -205,22 +203,21 @@ export default class Plant extends Component {
                     <Text style={styles.amount}>Mature</Text>
                   </View>
                 )}
-                
               </View>
             </View>
-            <View style = {{flex:1, alignItems: 'center', marginBottom:10}}>
-              <Text style = {{paddingBottom: 20, fontSize:10}}>
+            <View style={{ flex: 1, alignItems: "center", marginBottom: 10 }}>
+              <Text style={{ paddingBottom: 20, fontSize: 10 }}>
                 Pull the slider to edit your plant's stage!
               </Text>
               <Slider
-                  style = {{width:200}}
-                  minimumValue={0}
-                  maximumValue={3}
-                  step = {1}
-                  value = {this.state.slider}
-                  onSlidingComplete = {(val)=>this.editStage(val)}
-                />
-                </View>
+                style={{ width: 200 }}
+                minimumValue={0}
+                maximumValue={3}
+                step={1}
+                value={this.state.slider}
+                onSlidingComplete={(val) => this.editStage(val)}
+              />
+            </View>
 
             <View style={styles.careShadow}>
               <View style={styles.careInfoFlex}>
@@ -291,8 +288,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
     flexDirection: "column",
-    marginRight: 20,
-    marginLeft: 20,
   },
   careInfoFlex: {
     flex: 1,
@@ -352,10 +347,9 @@ const styles = StyleSheet.create({
   slider: {
     display: "flex",
     alignItems: "center",
-    marginRight:300,
+    marginRight: 300,
     width: 300,
     height: 40,
-
   },
   amount: {
     fontSize: 12,
