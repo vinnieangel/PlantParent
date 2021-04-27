@@ -68,4 +68,16 @@ router.route("/updatePassword").post((req, res) => {
     .catch((err) => console.log("Error: " + err));
 });
 
+router.route("/getNameEmail").post((req, res) => {
+  const id = req.body.userID;
+  user
+    .find({ _id: id }, { preferred_name: 1, _id: 0, email: 1, password: 0 })
+    .then((userInfo) => {
+      if (userInfo.length > 1) {
+        res.status(200).json({ userInfo: userInfo });
+      } else res.status(400).json("No information found!");
+    })
+    .catch((err) => res.status(400).json("Error: " + err));
+});
+
 module.exports = router; //do this for all routers

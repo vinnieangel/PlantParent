@@ -29,6 +29,7 @@ export default class ProfileScreen extends Component {
     password: "",
     confirmedUsername: "",
     confirmedPassword: "",
+    nameEmail: [],
   };
 
   // fetches the server and deleted the account
@@ -50,7 +51,31 @@ export default class ProfileScreen extends Component {
         console.log("Error: " + err);
       });
   }
-
+  async getNameEmail() {
+    await fetch("https://plantparent506.herokuapp.com/users/getNameEmail", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userID: this.userID,
+      }),
+    })
+      .then(async (res) => {
+        if (res.status == 400) {
+          console.log(await res.json());
+        } else {
+          return await res.json();
+        }
+      })
+      .then((res) => {
+        let display_info = [];
+        for (let entry of res.userInfo) {
+          display_info.push(entry);
+        }
+        this.setState({ nameEmail: display_info });
+      });
+  }
   async updateUsername() {
     console.log(this.state.confirmedUsername);
     await fetch("https://plantparent506.herokuapp.com/users/updateUsername", {
@@ -164,7 +189,7 @@ export default class ProfileScreen extends Component {
           <View style={styles.row}>
             <Ionicons name="person-outline" color="#777777" size={25} />
             <Text style={{ color: "#777777", marginLeft: 20, fontSize: 20 }}>
-              Name
+              Name {this.state.nameEmail[0]}
             </Text>
           </View>
         </View>
@@ -173,7 +198,7 @@ export default class ProfileScreen extends Component {
           <View style={styles.row}>
             <Ionicons name="mail-outline" color="#777777" size={30} />
             <Text style={{ color: "#777777", marginLeft: 20, fontSize: 20 }}>
-              Email Address
+              Email Address {this.state.nameEmail[1]}
             </Text>
           </View>
         </View>
