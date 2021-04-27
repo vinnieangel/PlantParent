@@ -17,7 +17,7 @@ router.route('/addWS').put((req, res) => {
     const WSID = req.body.WSID;
     userPlant.findOne({_id:userPlantID}).then((userPlant)=>{
         userPlant.wateringSchedule=WSID; 
-        userPlant.save().then(()=>res.status(200).json("Added WS!")).catch(err=> console.log("Error: " +err))}).catch(err=> console.log("Error: " +err));
+        userPlant.save().then((userPlant)=>res.status(200).json(userPlant)).catch(err=> console.log("Error: " +err))}).catch(err=> console.log("Error: " +err));
 });
 
 router.route('/getPlant/:plantID').get(async (req, res) => {
