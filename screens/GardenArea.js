@@ -112,7 +112,7 @@ export default class GardenArea extends React.Component {
                       style={styles.plantImage}
                       source={{ uri: this.state.plants[index].image }}
                     ></Image>
-                    <Text style = {styles.plantName}>{item.givenName}</Text>
+                    <Text style={styles.plantName}>{item.givenName}</Text>
                   </View>
                 </TouchableOpacity>
               </View>
@@ -120,10 +120,12 @@ export default class GardenArea extends React.Component {
           />
         )}
         {!this.state.plants.length && (
-          <Text>
-            Your garden is currently empty! Click on the Search Plants tab to
-            get started.
+          <Text style={styles.emptyGarden}>
+            Your garden is currently empty
           </Text>
+          // images appears if garden is empty
+          // <Image style = {styles.emptyImage}source={require('./../Images/yard.svg')} />
+
         )}
       </SafeAreaView>
     );
@@ -136,18 +138,31 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
   },
-  gridContainer:{
+  emptyGarden:{
+    fontSize: 27,
+    fontFamily:"Helvetica",
+    paddingTop: 190,
+    marginLeft: 80,
+    marginRight: 80,
+    textAlign: "center",
+    color: "#828282",
+    justifyContent: "center",
+    alignItems:"center",
+  },
+  emptyImage:{
+    width: 100,
+  },
+  gridContainer: {
     paddingTop: 10,
-  },  
+  },
   card: {
     padding: 10,
   },
-  plantName:{
+  plantName: {
     paddingTop: 10,
     fontSize: 16,
-    color: "#515151"
+    color: "#515151",
   },
-
   title: {
     color: "gray",
     marginBottom: 10,

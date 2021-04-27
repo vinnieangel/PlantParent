@@ -12,11 +12,9 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
-import { EvilIcons } from '@expo/vector-icons';
-import Slider from '@react-native-community/slider';
+import { EvilIcons } from "@expo/vector-icons";
+import Slider from "@react-native-community/slider";
 import DateTimePicker from "@react-native-community/datetimepicker";
-
-
 
 export default class Plant extends Component {
   userID = this.props.route.params.userID;
@@ -24,32 +22,30 @@ export default class Plant extends Component {
   plant = this.props.route.params.plant;
 
   state = {
-    givenName : this.userPlant.givenName,
+    givenName: this.userPlant.givenName,
     slider: 1,
     frequency: 0,
     wSExists: false,
-    nextWatering:"",
+    nextWatering: "",
     lastWatered: "",
-    frequency:0,
-    editLastWateredModal:false,
-    editNextWateringModal:false,
-    editFrequencyModal:false
-  }
-  
-  
-  
+    frequency: 0,
+    editLastWateredModal: false,
+    editNextWateringModal: false,
+    editFrequencyModal: false,
+  };
+
   async componentDidMount() {
     if (this.userPlant.stage == "Seed") {
       this.setState({ slider: 0 });
     } else if (this.userPlant.stage == "Germinated") {
       this.setState({ slider: 1 });
-    } else if (this.userPlant.stage == "Sapling") { 
+    } else if (this.userPlant.stage == "Sapling") {
       this.setState({ slider: 2 });
     } else {
       this.setState({ slider: 3 });
     }
     if (this.userPlant.wateringSchedule) {
-      this.setState({wSExists:true})
+      this.setState({ wSExists: true });
       await this.getWateringSchedule();
     }
   }
@@ -102,45 +98,73 @@ export default class Plant extends Component {
   async createWS(frequency) {
     let lastWatered = new Date();
     let nextWatering = new Date(lastWatered);
-  nextWatering.setDate(nextWatering.getDate() + frequency);
-  console.log(nextWatering)
-  
-    await fetch('http://localhost:5000/ws/create', {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
+    nextWatering.setDate(nextWatering.getDate() + frequency);
+    console.log(nextWatering);
+
+    await fetch("http://localhost:5000/ws/create", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        frequency:frequency,
-        lastWatered:lastWatered,
-        nextWatering:nextWatering
-      })
-    }).then(async res => res.json()).then(async res => {
-      await fetch('http://localhost:5000/userPlants/addWS', {
-        method: 'PUT',
-        headers: {
-          'Content-Type':'application/json'
-        },
-        body: JSON.stringify({
-          userPlantID: this.userPlant._id,
-          WSID: res.WSID
+        frequency: frequency,
+        lastWatered: lastWatered,
+        nextWatering: nextWatering,
+      }),
+    })
+      .then(async (res) => res.json())
+      .then(async (res) => {
+        await fetch("http://localhost:5000/userPlants/addWS", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userPlantID: this.userPlant._id,
+            WSID: res.WSID,
+          }),
         })
-      }).then(async res => await res.json()).then(res=> {
-        this.userPlant = res; 
-        this.setState({wSExists:true, nextWatering:nextWatering.toLocaleString().split(',')[0], lastWatered:lastWatered.toLocaleString().split(',')[0], frequency:frequency});
-        window.alert("You can water "+ this.state.givenName + " next on "+ nextWatering.toLocaleString().split(",")[0] + ". (Don't forget to water it today!)" )
-       });
-    }).catch(err => console.log("Error: " + err))
+          .then(async (res) => await res.json())
+          .then((res) => {
+            this.userPlant = res;
+            this.setState({
+              wSExists: true,
+              nextWatering: nextWatering.toLocaleString().split(",")[0],
+              lastWatered: lastWatered.toLocaleString().split(",")[0],
+              frequency: frequency,
+            });
+            window.alert(
+              "You can water " +
+                this.state.givenName +
+                " next on " +
+                nextWatering.toLocaleString().split(",")[0] +
+                ". (Don't forget to water it today!)"
+            );
+          });
+      })
+      .catch((err) => console.log("Error: " + err));
   }
 
-  async getWateringSchedule () {
-    await fetch("http://localhost:5000/ws/get/" + this.userPlant.wateringSchedule, {
-      method:'GET',
-      headers: {
-        'Content-Type':'application/json'
-      },
-    }).then(async res => await res.json()).then(res => {
-      this.setState({lastWatered:new Date(res.lastWatered).toLocaleString().split(',')[0], nextWatering:new Date(res.nextWatering).toLocaleString().split(',')[0], frequency: res.frequency})}).catch(err=> console.log("Error: " + err));
+  async getWateringSchedule() {
+    await fetch(
+      "http://localhost:5000/ws/get/" + this.userPlant.wateringSchedule,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then(async (res) => await res.json())
+      .then((res) => {
+        this.setState({
+          lastWatered: new Date(res.lastWatered).toLocaleString().split(",")[0],
+          nextWatering: new Date(res.nextWatering)
+            .toLocaleString()
+            .split(",")[0],
+          frequency: res.frequency,
+        });
+      })
+      .catch((err) => console.log("Error: " + err));
   }
-
 
   async editStage(num) {
     let newStage;
@@ -174,9 +198,6 @@ export default class Plant extends Component {
       });
   }
 
- 
-
-
   render() {
     return (
       <>
@@ -191,15 +212,20 @@ export default class Plant extends Component {
               </View>
               <View style={styles.descriptionWrapper}>
                 <View>
-                  <View style ={{flex:1, flexDirection:'row'}}>
-                  <Text style={styles.title}>{this.state.givenName}</Text>
-                  <TouchableOpacity style ={{marginTop:15}} 
-                    onPress ={()=>{
-                     let newName = prompt('Enter your plant\'s new given name here: ');
-                     console.log(newName)
-                    if (newName) this.editName(newName)}}>
-                    <EvilIcons name="pencil" size={24} color="black"  />
-                  </TouchableOpacity>
+                  <View style={{ flex: 1, flexDirection: "row" }}>
+                    <Text style={styles.title}>{this.state.givenName}</Text>
+                    <TouchableOpacity
+                      style={{ marginTop: 15 }}
+                      onPress={() => {
+                        let newName = prompt(
+                          "Enter your plant's new given name here: "
+                        );
+                        console.log(newName);
+                        if (newName) this.editName(newName);
+                      }}
+                    >
+                      <EvilIcons name="pencil" size={24} color="black" />
+                    </TouchableOpacity>
                   </View>
                 </View>
                 <View>
@@ -249,7 +275,7 @@ export default class Plant extends Component {
                     <MaterialCommunityIcons
                       name="leaf"
                       size={50}
-                      color="#51A746"
+                      color="#417B39"
                     />
                     <Text style={styles.amount}>Sapling</Text>
                   </View>
@@ -337,35 +363,41 @@ export default class Plant extends Component {
 
             <View style={styles.aboutSection}>
               <Text style={styles.title}> Watering Schedule </Text>
-              {!this.state.wSExists && 
-              <TouchableOpacity style = {styles.addButton}
-              onPress={()=>{
-                let frequency = prompt('Enter how frequently you would like to water your plant (in days): ');
-                if (frequency) {
-                  if (!parseInt(frequency)) {
-                    window.alert("Please enter a valid number!")
-                  }
-                  else {
-                    this.createWS(parseInt(frequency))
-                  }
-                }
-              }} >
-                <Text style = {{color:'white'}}>
-                  Add Watering Schedule
-                </Text>
-              </TouchableOpacity>}
-              {this.state.wSExists &&
-                <View style = {styles.wsContainer}>
-                  <View style = {styles.wsIcon}>
-                    <MaterialCommunityIcons name="calendar-multiple-check" size={40} color="green" />
-                    <Text style = {{ fontSize:12, marginTop:4}}>
+              {!this.state.wSExists && (
+                <TouchableOpacity
+                  style={styles.addButton}
+                  onPress={() => {
+                    let frequency = prompt(
+                      "Enter how frequently you would like to water your plant (in days): "
+                    );
+                    if (frequency) {
+                      if (!parseInt(frequency)) {
+                        window.alert("Please enter a valid number!");
+                      } else {
+                        this.createWS(parseInt(frequency));
+                      }
+                    }
+                  }}
+                >
+                  <Text style={styles.button}>Add Watering Schedule</Text>
+                </TouchableOpacity>
+              )}
+              {this.state.wSExists && (
+                <View style={styles.wsContainer}>
+                  <View style={styles.wsIcon}>
+                    <MaterialCommunityIcons
+                      name="calendar-multiple-check"
+                      size={40}
+                      color="green"
+                    />
+                    <Text style={{ fontSize: 12, marginTop: 4 }}>
                       Last Watered
                     </Text>
-                    <View style = {{flex:1, flexDirection:'row'}}>
-                    <Text style = {{fontSize:17}}>
-                      {this.state.lastWatered}
-                    </Text>
-                    <EvilIcons name="pencil" size={24} color="black"  />
+                    <View style={{ flex: 1, flexDirection: "row" }}>
+                      <Text style={{ fontSize: 17 }}>
+                        {this.state.lastWatered}
+                      </Text>
+                      <EvilIcons name="pencil" size={24} color="black" />
                     </View>
                     <Modal
                       animationType="fade"
@@ -376,37 +408,43 @@ export default class Plant extends Component {
                         setModalVisible(!modalVisible);
                       }}
                     >
-                      <View style={styles.centeredView}>
-                        
-                      </View>
+                      <View style={styles.centeredView}></View>
                     </Modal>
                   </View>
-                  <View style = {styles.wsIcon}>
-                    <MaterialCommunityIcons name="watering-can" size={40} color="green" />
-                    <Text style = {{ fontSize:12, marginTop:4}}>
+                  <View style={styles.wsIcon}>
+                    <MaterialCommunityIcons
+                      name="watering-can"
+                      size={40}
+                      color="green"
+                    />
+                    <Text style={{ fontSize: 12, marginTop: 4 }}>
                       Next Watering
                     </Text>
-                    <View style = {{flex:1, flexDirection:'row'}}>
-                      <Text style = {{fontSize:17}}>
+                    <View style={{ flex: 1, flexDirection: "row" }}>
+                      <Text style={{ fontSize: 17 }}>
                         {this.state.nextWatering}
                       </Text>
-                      <EvilIcons name="pencil" size={24} color="black"  />
-                      </View>
+                      <EvilIcons name="pencil" size={24} color="black" />
+                    </View>
                   </View>
-                  <View style = {styles.wsIcon}>
-                    <MaterialCommunityIcons name="refresh" size={40} color="green" />
-                  <Text style = {{ fontSize:12, marginTop:4}}>
+                  <View style={styles.wsIcon}>
+                    <MaterialCommunityIcons
+                      name="refresh"
+                      size={40}
+                      color="green"
+                    />
+                    <Text style={{ fontSize: 12, marginTop: 4 }}>
                       Frequency
-                  </Text>
-                  <View style = {{flex:1, flexDirection:'row'}}>
-                  <Text style = {{fontSize:17}}>
-                      {this.state.frequency}
                     </Text>
-                    <EvilIcons name="pencil" size={24} color="black"  />
-                  </View>
+                    <View style={{ flex: 1, flexDirection: "row" }}>
+                      <Text style={{ fontSize: 17 }}>
+                        {this.state.frequency}
+                      </Text>
+                      <EvilIcons name="pencil" size={24} color="black" />
+                    </View>
                   </View>
                 </View>
-              }
+              )}
             </View>
           </SafeAreaView>
         </ScrollView>
@@ -420,18 +458,20 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
     flexDirection: "column",
+    paddingLeft: 15,
+    paddingRight: 15,
   },
   wsContainer: {
-    flex:1,
-    flexDirection:'row',
-    alignItems:'center',
-    alignContent:'center',
-    justifyContent:'center'
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    alignContent: "center",
+    justifyContent: "center",
   },
   wsIcon: {
-    flex:1,
-    alignItems:'center',
-    padding:10
+    flex: 1,
+    alignItems: "center",
+    padding: 10,
   },
   careInfoFlex: {
     flex: 1,
@@ -446,8 +486,8 @@ const styles = StyleSheet.create({
   careFont: {
     fontSize: 25,
     color: "white",
-    paddingLeft: 25,
-    paddingBottom: 10,
+    paddingLeft: 20,
+    paddingBottom: 20,
   },
   careContainer: {
     flexDirection: "column",
@@ -458,7 +498,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22
+    marginTop: 22,
   },
   careWrapper: {
     flexDirection: "column",
@@ -469,8 +509,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
-    paddingLeft: 25,
-    paddingRight: 25,
+    paddingLeft: 20,
   },
 
   needFlexWrapper: {
@@ -519,7 +558,7 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     width: 150,
-    height: 180,
+    height: 150,
     borderRadius: 10,
     overflow: "hidden",
   },
@@ -531,11 +570,12 @@ const styles = StyleSheet.create({
   },
   title: {
     paddingTop: 20,
+    paddingLeft: 5,
     fontFamily: "Helvetica",
     fontSize: 20,
     color: "#515151",
     paddingBottom: 10,
-    textAlign:'center'
+    textAlign: "left",
   },
   subtitle: {
     fontFamily: "Helvetica",
@@ -545,17 +585,23 @@ const styles = StyleSheet.create({
     paddingLeft: 8,
   },
   careTitle: {
-    fontSize: 12,
+    paddingBottom: 10,
+    fontSize: 13,
     color: "white",
   },
   careAmount: {
     width: 315,
     fontSize: 15,
     color: "white",
-    paddingTop: 3,
+    paddingBottom: 20,
   },
   aboutSection: {
     paddingTop: 30,
+  },
+  button: {
+    backgroundColor: "#417B39",
+    fontSize: 15,
+    color:"white",
   },
   deleteButton: {
     marginTop: 10,
@@ -565,11 +611,10 @@ const styles = StyleSheet.create({
     width: 150,
   },
   addButton: {
-    margin:10,
+    margin: 10,
     padding: 10,
     backgroundColor: "green",
     borderRadius: 2,
     width: 200,
-
   },
 });
