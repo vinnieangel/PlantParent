@@ -170,28 +170,8 @@ export default class ProfileScreen extends Component {
   }
 
   render() {
-    this.getNameEmail();
-    console.log(this.state.name);
     return (
       <SafeAreaView style={styles.container}>
-        <View style={styles.userInfoSection}>
-          <View style={styles.row}>
-            <Ionicons name="person-outline" color="#777777" size={25} />
-            <Text style={{ color: "#777777", marginLeft: 20, fontSize: 20 }}>
-              Name {this.state.name}
-            </Text>
-          </View>
-        </View>
-
-        <View style={styles.userInfoSection}>
-          <View style={styles.row}>
-            <Ionicons name="mail-outline" color="#777777" size={30} />
-            <Text style={{ color: "#777777", marginLeft: 20, fontSize: 20 }}>
-              Email Address
-            </Text>
-          </View>
-        </View>
-
         <View style={styles.settingWrapper}>
           <Modal
             animationType="slide"

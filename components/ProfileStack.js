@@ -14,7 +14,7 @@ export default class App extends React.Component {
       <Stack.Navigator>
         <Stack.Screen
           options={{ unmountOnBlur: true }}
-          name="Profile"
+          name="Setting"
           component={ProfileScreen}
           initialParams={{
             userID: this.props.userID,

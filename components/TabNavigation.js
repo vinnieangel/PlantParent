@@ -26,8 +26,8 @@ export default class TabNavigation extends React.Component {
               iconName = focused ? "search-outline" : "search-sharp";
             } else if (route.name === "Calendar") {
               iconName = focused ? "calendar" : "calendar-sharp";
-            } else if (route.name === "Profile") {
-              iconName = focused ? "person-outline" : "person";
+            } else if (route.name === "Setting") {
+              iconName = focused ? "settings-outline" : "settings";
             }
 
             // You can return any component that you like here!
@@ -45,7 +45,7 @@ export default class TabNavigation extends React.Component {
           children={() => <SearchArea userID={this.userID} />}
         />
         <Tab.Screen
-          name="Profile"
+          name="Setting"
           children={() => <ProfileStack userID={this.userID} />}
         />
       </Tab.Navigator>

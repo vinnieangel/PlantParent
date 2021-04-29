@@ -118,22 +118,22 @@ export default class SearchArea extends React.Component {
   }
 
   render() {
-    const { search } = this.state;
+    // const { search } = this.state;
 
-    const onChangeSearch = (query) => {
-      console.log(query);
-      this.setState({ search: query });
-    };
-    console.log(this.props);
+    // const onChangeSearch = (query) => {
+    //   console.log(query);
+    //   this.setState({ search: query });
+    // };
+    // console.log(this.props);
     return (
       <ScrollView style={styles.container}>
-        <TextInput
+        {/* <TextInput
           style={styles.newSearch}
           placeholder="Search"
           placeholderTextColor="#828282"
           onChangeText={onChangeSearch}
           value={search}
-        />
+        /> */}
 
         <View style={styles.listContainer}>
           <FlatList
