@@ -8,8 +8,7 @@ import ReactTestUtils from "react-dom/test-utils"; // ES6
 import { shallow, configure } from "enzyme";
 import Adapter from "enzyme-adapter-react-15";
 
-  window.alert = jest.fn();
-
+window.alert = jest.fn();
 
 test("render Login input component properly", () => {
   const { debug, getByTestId, getByText, getByPlaceholderText } = render(
@@ -19,7 +18,7 @@ test("render Login input component properly", () => {
   expect(input).toBeDefined();
 });
 
-  test("render password input component properly", () => {
+test("render password input component properly", () => {
   const { debug, getByTestId, getByText, getByPlaceholderText } = render(
     <Login />
   );
@@ -53,11 +52,11 @@ test("snapshot test of Login component", () => {
 
 test("gives invalid", () => {
   const navigation = {
-    navigate: ()=> {;}
-  }
-  const wrapper = shallow(<Login navigation={navigation} />)
+    navigate: () => {},
+  };
+  const wrapper = shallow(<Login navigation={navigation} />);
   wrapper.instance().login();
-  const spy = jest.spyOn(navigation, 'navigate')
-  expect(spy).toHaveBeenCalledTimes(0)
-  window.alert.mockClear();  // restore the jsdom alert
-} )
+  const spy = jest.spyOn(navigation, "navigate");
+  expect(spy).toHaveBeenCalledTimes(0);
+  window.alert.mockClear(); // restore the jsdom alert
+});
