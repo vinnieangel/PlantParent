@@ -32,7 +32,6 @@
       "node_modules/(?!(jest-)?react-native|@?react-navigation)",
       "/node_modules/(?!native-base)/"
     ]
-    
   },
   "dependencies": {
     "@expo-google-fonts/dev": "^0.1.0",
