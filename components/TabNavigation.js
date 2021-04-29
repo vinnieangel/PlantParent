@@ -11,7 +11,8 @@ import CalendarScreen from "../screens/CalendarArea";
 const Tab = createBottomTabNavigator();
 export default class TabNavigation extends React.Component {
   userID = this.props.route.params.userID;
-
+  name = this.props.route.params.name;
+  email = this.props.route.params.email;
   render() {
     return (
       <Tab.Navigator
@@ -43,8 +44,10 @@ export default class TabNavigation extends React.Component {
           name="Search Plants"
           children={() => <SearchArea userID={this.userID} />}
         />
-        <Tab.Screen  name="Profile"
-          children={() => <ProfileStack userID={this.userID} />} />
+        <Tab.Screen
+          name="Profile"
+          children={() => <ProfileStack userID={this.userID} />}
+        />
       </Tab.Navigator>
     );
   }
