@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   card: {
-    padding: 10,
+    padding: 15,
   },
   plantName: {
     paddingTop: 10,
@@ -173,6 +173,7 @@ const styles = StyleSheet.create({
     opacity: 0.9,
     fontSize: 22,
   },
+
   plantImage: {
     flex: 1,
     height: 180,

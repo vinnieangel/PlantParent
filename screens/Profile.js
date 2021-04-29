@@ -187,7 +187,7 @@ export default class ProfileScreen extends Component {
       <SafeAreaView style={styles.container}>
         <View style={styles.userInfoSection}>
           <View style={styles.row}>
-            <Ionicons name="person-outline" color="#777777" size={25} />
+            
             <Text style={{ color: "#777777", marginLeft: 20, fontSize: 20 }}>
               Name {this.state.nameEmail[0]}
             </Text>
@@ -196,7 +196,7 @@ export default class ProfileScreen extends Component {
 
         <View style={styles.userInfoSection}>
           <View style={styles.row}>
-            <Ionicons name="mail-outline" color="#777777" size={30} />
+          
             <Text style={{ color: "#777777", marginLeft: 20, fontSize: 20 }}>
               Email Address {this.state.nameEmail[1]}
             </Text>
@@ -249,7 +249,7 @@ export default class ProfileScreen extends Component {
             }}
           >
             <View style={styles.settingItem}>
-              <Ionicons name="settings-outline" color="#FF6347" size={25} />
+              <Ionicons name="settings-outline" color="#417B39" size={25} />
               <Text style={styles.settingItemText}>Change Username</Text>
             </View>
           </TouchableRipple>
@@ -300,7 +300,7 @@ export default class ProfileScreen extends Component {
             }}
           >
             <View style={styles.settingItem}>
-              <Ionicons name="lock-closed-outline" color="#FF6347" size={25} />
+              <Ionicons name="lock-closed-outline" color="#417B39" size={25} />
               <Text style={styles.settingItemText}>Change Password</Text>
             </View>
           </TouchableRipple>
@@ -335,7 +335,7 @@ export default class ProfileScreen extends Component {
             }}
           >
             <View style={styles.settingItem}>
-              <Ionicons name="trash-outline" color="#FF6347" size={25} />
+              <Ionicons name="trash-outline" color="#417B39" size={25} />
               <Text style={styles.settingItemText}>Delete Account</Text>
             </View>
           </TouchableRipple>
