@@ -14,7 +14,7 @@ import { TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Picker } from "@react-native-picker/picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
-//import ReadMore from "react-native-read-more-text";
+import ReadMore from "react-native-read-more-text";
 import { Exo_500Medium } from "@expo-google-fonts/dev";
 
 export default class SearchArea extends React.Component {
