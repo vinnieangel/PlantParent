@@ -1,26 +1,15 @@
-import React, { useState, Component } from "react";
-import { Modal, useWindowDimensions } from "react-native";
+import React, { Component } from "react";
+import { Modal } from "react-native";
 import { Button } from "react-native";
-import {
-  View,
-  text,
-  SafeAreaView,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-} from "react-native";
-import {
-  Avatar,
-  Title,
-  Caption,
-  Text,
-  TouchableRipple,
-} from "react-native-paper";
+import { View, SafeAreaView, StyleSheet, TextInput } from "react-native";
+import { Text, TouchableRipple } from "react-native-paper";
 
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 export default class ProfileScreen extends Component {
   userID = this.props.route.params.userID;
+  // name = this.props.route.params.name;
+  //email = this.props.route.params.email;
   state = {
     modalVisible1: false,
     modalVisible2: false,
@@ -29,7 +18,7 @@ export default class ProfileScreen extends Component {
     password: "",
     confirmedUsername: "",
     confirmedPassword: "",
-    nameEmail: [],
+    name: "",
   };
 
   // fetches the server and deleted the account
@@ -52,32 +41,30 @@ export default class ProfileScreen extends Component {
       });
   }
   async getNameEmail() {
+    console.log(this.props.route.params.userID);
     await fetch("https://plantparent506.herokuapp.com/users/getNameEmail", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        userID: this.userID,
+        userID: this.props.route.params.userID,
       }),
     })
       .then(async (res) => {
+        let response = await res.json();
+        console.log(res.status);
         if (res.status == 400) {
-          console.log(await res.json());
+          window.alert("Something wrong!");
         } else {
-          return await res.json();
+          this.setState({ name: response });
         }
       })
-      .then((res) => {
-        let display_info = [];
-        for (let entry of res.userInfo) {
-          display_info.push(entry);
-        }
-        this.setState({ nameEmail: display_info });
+      .catch((err) => {
+        console.log(err);
       });
   }
   async updateUsername() {
-    console.log(this.state.confirmedUsername);
     await fetch("https://plantparent506.herokuapp.com/users/updateUsername", {
       method: "POST",
       headers: {
@@ -95,7 +82,6 @@ export default class ProfileScreen extends Component {
   }
 
   async updatePassword() {
-    console.log(this.state.confirmedPassword);
     await fetch("https://plantparent506.herokuapp.com/users/updatePassword", {
       method: "POST",
       headers: {
@@ -147,6 +133,7 @@ export default class ProfileScreen extends Component {
       if (this.state.username === this.state.confirmedUsername) {
         // POST to database
         this.updateUsername();
+        //this.getNameEmail();
         window.alert("New user name is updated.");
       } else {
         this.state.username = "";
@@ -185,24 +172,6 @@ export default class ProfileScreen extends Component {
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        <View style={styles.userInfoSection}>
-          <View style={styles.row}>
-            <Ionicons name="person-outline" color="#777777" size={25} />
-            <Text style={{ color: "#777777", marginLeft: 20, fontSize: 20 }}>
-              Name {this.state.nameEmail[0]}
-            </Text>
-          </View>
-        </View>
-
-        <View style={styles.userInfoSection}>
-          <View style={styles.row}>
-            <Ionicons name="mail-outline" color="#777777" size={30} />
-            <Text style={{ color: "#777777", marginLeft: 20, fontSize: 20 }}>
-              Email Address {this.state.nameEmail[1]}
-            </Text>
-          </View>
-        </View>
-
         <View style={styles.settingWrapper}>
           <Modal
             animationType="slide"

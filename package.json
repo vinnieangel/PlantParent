@@ -29,7 +29,8 @@
       }
     },
     "transformIgnorePatterns": [
-      "node_modules/(?!(jest-)?react-native|@?react-navigation)"
+      "node_modules/(?!(jest-)?react-native|@?react-navigation)",
+      "/node_modules/(?!native-base)/"
     ]
   },
   "dependencies": {
@@ -56,12 +57,14 @@
     "react-native-elements": "^3.3.2",
     "react-native-gesture-handler": "^1.8.0",
     "react-native-paper": "^4.7.2",
+    "react-native-read-more-text": "^1.1.2",
     "react-native-reanimated": "~1.13.0",
     "react-native-safe-area-context": "3.1.9",
     "react-native-screens": "~2.15.2",
     "react-native-simple-radio-button": "^2.7.4",
     "react-native-web": "~0.13.12",
-    "react-test-renderer": "^17.0.2"
+    "react-test-renderer": "^17.0.2",
+    "wd": "^1.14.0"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",

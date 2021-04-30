@@ -1,13 +1,21 @@
 import react from "react";
 import React, { Component } from "react";
-import { SafeAreaView, FlatList, Button, Text, TextInput } from "react-native";
-import { Card } from "react-native-elements";
+import {
+  SafeAreaView,
+  FlatList,
+  ScrollView,
+  Text,
+  TextInput,
+} from "react-native";
+import { Button } from "react-native-elements";
 import { StyleSheet, View, Image, Modal } from "react-native";
 import { Searchbar } from "react-native-paper";
 import { TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Picker } from "@react-native-picker/picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import ReadMore from "react-native-read-more-text";
+import { Exo_500Medium } from "@expo-google-fonts/dev";
 
 export default class SearchArea extends React.Component {
   userID = this.props.userID;
@@ -110,21 +118,22 @@ export default class SearchArea extends React.Component {
   }
 
   render() {
-    const { search } = this.state;
+    // const { search } = this.state;
 
-    const onChangeSearch = (query) => {
-      console.log(query);
-      this.setState({ search: query });
-    };
-    console.log(this.props);
+    // const onChangeSearch = (query) => {
+    //   console.log(query);
+    //   this.setState({ search: query });
+    // };
+    // console.log(this.props);
     return (
-      <SafeAreaView style={styles.container}>
-        <TextInput
+      <ScrollView style={styles.container}>
+        {/* <TextInput
           style={styles.newSearch}
           placeholder="Search"
           placeholderTextColor="#828282"
           onChangeText={onChangeSearch}
-          value={search}/>
+          value={search}
+        /> */}
 
         <View style={styles.listContainer}>
           <FlatList
@@ -143,54 +152,58 @@ export default class SearchArea extends React.Component {
                     );
                   }}
                 >
-                  <Card>
+                  <View style={styles.plantCard}>
                     <Image
                       style={styles.plantImage}
                       source={{ uri: item.image }}
                     ></Image>
-                    <Card.Title>{item.name}</Card.Title>
-                  </Card>
+                    <Text style={styles.plantName}>{item.name}</Text>
+                  </View>
                 </TouchableOpacity>
               </View>
             )}
           />
         </View>
-        <View>
-          <Modal
-            visible={this.state.modalVisible}
-            animationType="fade"
-            transparent={true}
-          >
-            {this.state.dummyPlants[this.state.clickedPlantIndex] && (
-              <View style={styles.modalView}>
-                <View style={{ float: "right" }}>
-                  <TouchableOpacity
-                    style={{ flexDirection: "row", alignContent: "flex-end" }}
-                    onPress={() => {
-                      this.setState({
-                        modalVisible: false,
-                        clickedPlantIndex: undefined,
-                      });
-                    }}
-                  >
-                    <Ionicons name="close" size={40}></Ionicons>
-                  </TouchableOpacity>
+
+        <Modal
+          visible={this.state.modalVisible}
+          animationType="fade"
+          transparent={false}
+        >
+          {this.state.dummyPlants[this.state.clickedPlantIndex] && (
+            <SafeAreaView style={styles.modalStyle}>
+              <ScrollView>
+                <TouchableOpacity
+                  style={styles.closeButton}
+                  onPress={() => {
+                    this.setState({
+                      modalVisible: false,
+                      clickedPlantIndex: undefined,
+                    });
+                  }}
+                >
+                  <Ionicons name="close" size={40}></Ionicons>
+                </TouchableOpacity>
+
+                <View style={styles.plantBioWrapper}>
+                  <ReadMore numberOfLines={3}>
+                    <Text style={styles.plantBio}>
+                      {
+                        this.state.dummyPlants[this.state.clickedPlantIndex]
+                          .basicDescription
+                      }
+                    </Text>
+                  </ReadMore>
                 </View>
-                <Text style={{ marginTop: 10, marginBottom: 20 }}>
-                  {
-                    this.state.dummyPlants[this.state.clickedPlantIndex]
-                      .basicDescription
-                  }
-                </Text>
-                <Text>Enter your plant's nickname</Text>
+                <Text style={styles.plantInfoTitle}>Plant Nickname</Text>
                 <TextInput
                   onChangeText={(text) => {
                     this.givenName = text;
                   }}
-                  placeholder={"Enter your plant's name here"}
+                  placeholder={"E.g. Sasha"}
                   style={styles.textInput}
                 ></TextInput>
-                <Text>Choose what stage your plant is in</Text>
+                <Text style={styles.plantInfoTitle}>Plant Stage</Text>
                 <Picker
                   style={{ height: 100, width: 200 }}
                   selectedValue={this.state.selectedStage}
@@ -203,7 +216,7 @@ export default class SearchArea extends React.Component {
                   <Picker.Item label="Sapling" value="Sapling" />
                   <Picker.Item label="Mature" value="Mature" />
                 </Picker>
-                <Text style={{ marginTop: 100 }}>
+                <Text style={{ marginTop: 100, fontSize: 18 }}>
                   Plant Birthday
                 </Text>
                 <DateTimePicker
@@ -216,25 +229,24 @@ export default class SearchArea extends React.Component {
                     this.setState({ dob: selectedDate })
                   }
                 />
-                <TouchableOpacity
+
+                <Button
+                  title="Add to Garden"
+                  color="red"
                   style={styles.addButton}
                   onPress={async () => {
                     if (this.givenName == "") {
-                      window.alert(
-                        "Enter a plant name before adding to garden!"
-                      );
+                      window.alert("Please enter a plant nickname");
                     } else {
                       await this.addToGarden();
                     }
                   }}
-                >
-                  <Text style={{ color: "white" }}>Add to Garden</Text>
-                </TouchableOpacity>
-              </View>
-            )}
-          </Modal>
-        </View>
-      </SafeAreaView>
+                />
+              </ScrollView>
+            </SafeAreaView>
+          )}
+        </Modal>
+      </ScrollView>
     );
   }
 }
@@ -249,15 +261,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  searchBarContainer: {
+
+  newSearch: {
+    paddingTop: 50,
     justifyContent: "center",
-    alignItems: "center",
-    paddingTop: 40,
-    marginBottom: 10,
-  },
-  newSearch:{
-    justifyContent: "center",
-    borderStyle:"solid",
+    borderStyle: "solid",
     borderRadius: 1,
     borderColor: "gray",
     margin: 25,
@@ -265,37 +273,59 @@ const styles = StyleSheet.create({
   },
   plantImage: {
     flex: 1,
-    height: 100,
-    width: 100,
+    height: 150,
+    width: 150,
+    borderRadius: 10,
+  },
+  plantName: {
+    paddingTop: 10,
+    fontSize: 16,
+    color: "#515151",
+    flexDirection: "row",
+    flex: 1,
+    flexWrap: "wrap",
+    flexShrink: 1,
+  },
+  closeButton: {},
+  buttonText: {
+    fontSize: 17,
+    textAlign: "center",
+    color: "white",
   },
   addButton: {
-    backgroundColor: "#006400",
+    color: "green",
+    width: 300,
+    justifyContent: "center",
     padding: 10,
     borderRadius: 10,
     marginTop: 20,
   },
-  modalView: {
-    margin: 20,
+  modalStyle: {
     backgroundColor: "white",
-    borderRadius: 20,
-    padding: 35,
-    paddingTop: 10,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
+    flex: 1,
+    marginLeft: 20,
+    marginRight: 20,
+  },
+  plantInfoTitle: {
+    paddingTop: 20,
+    paddingBottom: 20,
+    fontSize: 18,
+  },
+  plantCard: {
+    padding: 15,
+  },
+  plantBioWrapper: {
+    paddingTop: 40,
+  },
+  plantBio: {
+    fontSize: 16,
   },
   textInput: {
     paddingLeft: 5,
     margin: 2,
     width: "100%",
     height: 35,
-    borderWidth: .5,
+    borderWidth: 0.5,
     borderColor: "gray",
   },
 });

@@ -29,7 +29,11 @@ router.route("/login").post((req, res) => {
     .findOne({ username: username, password: password })
     .then((user) => {
       if (user) {
-        res.status(200).json({ userID: user._id });
+        res.status(200).json({
+          userID: user._id,
+          name: user.preferred_name,
+          email: user.email,
+        });
       } else {
         res.status(400).json("Not Found");
       }
@@ -37,6 +41,19 @@ router.route("/login").post((req, res) => {
     .catch((err) => res.status(400).json("Error" + err));
 });
 
+router.route("/getNameEmail").get((req, res) => {
+  const id = req.body.userID;
+  user
+    .find({ _id: id }, { preferred_name: 1, _id: 0, email: 0, password: 0 })
+    .then((userInfo) => {
+      if (userInfo) {
+        res.status(200).json({
+          name: userInfo.preferred_name,
+        });
+      } else res.status(400).json("No information found!");
+    })
+    .catch((err) => res.status(400).json("Error: " + err));
+});
 //deletes account
 router.route("/delete").delete((req, res) => {
   const userID = req.body.userID;
@@ -66,18 +83,6 @@ router.route("/updatePassword").post((req, res) => {
       res.status(200).json("Password is Updated! Redirect to login screen")
     )
     .catch((err) => console.log("Error: " + err));
-});
-
-router.route("/getNameEmail").post((req, res) => {
-  const id = req.body.userID;
-  user
-    .find({ _id: id }, { preferred_name: 1, _id: 0, email: 1, password: 0 })
-    .then((userInfo) => {
-      if (userInfo.length > 1) {
-        res.status(200).json({ userInfo: userInfo });
-      } else res.status(400).json("No information found!");
-    })
-    .catch((err) => res.status(400).json("Error: " + err));
 });
 
 module.exports = router; //do this for all routers

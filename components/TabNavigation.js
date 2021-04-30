@@ -11,7 +11,8 @@ import CalendarScreen from "../screens/CalendarArea";
 const Tab = createBottomTabNavigator();
 export default class TabNavigation extends React.Component {
   userID = this.props.route.params.userID;
-
+  name = this.props.route.params.name;
+  email = this.props.route.params.email;
   render() {
     return (
       <Tab.Navigator
@@ -25,8 +26,8 @@ export default class TabNavigation extends React.Component {
               iconName = focused ? "search-outline" : "search-sharp";
             } else if (route.name === "Calendar") {
               iconName = focused ? "calendar" : "calendar-sharp";
-            } else if (route.name === "Profile") {
-              iconName = focused ? "person-outline" : "person";
+            } else if (route.name === "Setting") {
+              iconName = focused ? "settings-outline" : "settings";
             }
 
             // You can return any component that you like here!
@@ -43,8 +44,10 @@ export default class TabNavigation extends React.Component {
           name="Search Plants"
           children={() => <SearchArea userID={this.userID} />}
         />
-        <Tab.Screen  name="Profile"
-          children={() => <ProfileStack userID={this.userID} />} />
+        <Tab.Screen
+          name="Setting"
+          children={() => <ProfileStack userID={this.userID} />}
+        />
       </Tab.Navigator>
     );
   }
