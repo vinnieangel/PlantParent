@@ -18,7 +18,6 @@ import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { EvilIcons } from "@expo/vector-icons";
 import Slider from "@react-native-community/slider";
-import DateTimePicker from "@react-native-community/datetimepicker";
 
 export default class Plant extends Component {
   userID = this.props.route.params.userID;
@@ -28,7 +27,6 @@ export default class Plant extends Component {
   state = {
     givenName: this.userPlant.givenName,
     slider: 1,
-    frequency: 0,
     wSExists: false,
     nextWatering: "",
     lastWatered: "",
@@ -76,7 +74,7 @@ export default class Plant extends Component {
       return;
     let newNextWatering = new Date(newLastWatered);
     newNextWatering.setDate(newNextWatering.getDate() + this.state.frequency);
-    await fetch("http://localhost:5000/ws/editLastWatered", {
+    await fetch("https://plantparent506.herokuapp.com/ws/editLastWatered", {
       method:'PUT',
       headers: {
         'Content-Type': 'application/json'
@@ -96,7 +94,7 @@ export default class Plant extends Component {
     if (newNextWatering == new Date(this.state.nextWatering))
       return;
     let newFrequency = newNextWatering - (new Date(this.state.lastWatered));
-    await fetch("http://localhost:5000/ws/editNextWatering", {
+    await fetch("https://plantparent506.herokuapp.com/ws/editNextWatering", {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
@@ -155,11 +153,12 @@ export default class Plant extends Component {
   }
 
   async editFrequency() {
+    
     let newFrequency = parseInt(this.state.editFrequency)
     let newNextWatering = new Date(this.state.lastWatered)
     newNextWatering.setDate(newNextWatering.getDate() + newFrequency)
-    
-    await fetch("http://localhost:5000/ws/editFrequency", {
+    console.log(newFrequency, newNextWatering)
+    await fetch("https://plantparent506.herokuapp.com/ws/editFrequency", {
       method:'PUT',
       headers: {
         'Content-Type':'application/json'
@@ -551,9 +550,14 @@ export default class Plant extends Component {
                     <Text style={{ fontSize: 12, marginTop: 4 }}>
                       Frequency
                     </Text>
-                    <TouchableOpacity onPress ={()=>this.setState({editFrequencyModal:true})}>
-                      <EvilIcons name="pencil" size={24} color="black"  />
-                    </TouchableOpacity>
+                    <View style={{ flex: 1, flexDirection: "row" }}>
+                      <Text style={{ fontSize: 17 }}>
+                        {this.state.frequency}
+                      </Text>
+                      <TouchableOpacity onPress = {()=>{this.setState({editFrequencyModal:true})}}>
+                        <EvilIcons name="pencil" size={24} color="black"  />
+                      </TouchableOpacity>
+                      </View>
                   </View>
                   {this.state.editFrequencyModal && <Modal
                       animationType="fade"
@@ -567,8 +571,9 @@ export default class Plant extends Component {
                             Please enter your new frequency in number of days!
                           </Text>
                          <TextInput
-                          placeholder={this.state.frequency}
-                          onChange={(text)=>this.setState({editFrequency:text})}
+                          placeholder={this.state.frequency.toString()}
+                          onChangeText={(text)=>this.setState({editFrequency:text})}
+                          style = {{width:50, height:30, padding:3, borderWidth:1, marginBottom:10}}
                          >
                          </TextInput>
                           

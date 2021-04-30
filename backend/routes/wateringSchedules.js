@@ -32,7 +32,7 @@ router.route('/editFrequency').put((req, res) => {
     const newNextWatering = req.body.newNextWatering;
     wS.findOne({_id:WSID}).then(ws => {
         ws.frequency = newFrequency;
-        ws.newNextWatering = newNextWatering;
+        ws.nextWatering = newNextWatering;
         ws.save().then(newWs =>res.status(200).json(newWs)).catch(err => console.log("Error: " + err))
     }).catch(err => console.log("Error: " + err));
 })
