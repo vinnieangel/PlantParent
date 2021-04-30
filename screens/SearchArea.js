@@ -186,14 +186,14 @@ export default class SearchArea extends React.Component {
                 </TouchableOpacity>
 
                 <View style={styles.plantBioWrapper}>
-                  {/*<ReadMore numberOfLines={3}>*/}
+                  <ReadMore numberOfLines={3}>
                     <Text style={styles.plantBio}>
                       {
                         this.state.dummyPlants[this.state.clickedPlantIndex]
                           .basicDescription
                       }
                     </Text>
-                  {/*</ReadMore>*/}
+                  </ReadMore>
                 </View>
                 <Text style={styles.plantInfoTitle}>Plant Nickname</Text>
                 <TextInput
