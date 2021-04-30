@@ -7,22 +7,25 @@ import {
   Text,
   ScrollView,
   TouchableOpacity,
+  Modal,
+  TextInput
 } from "react-native";
-import Ionicons from "react-native-vector-icons/Ionicons";
+
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { EvilIcons } from '@expo/vector-icons';
 import Slider from '@react-native-community/slider';
-import DateTimePicker from "@react-native-community/datetimepicker";
+
+import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
+import DateTimePicker from '@react-native-community/datetimepicker';
+
+
 
 
 
 export default class Plant extends Component {
  
-
-  
-  
      userID = this.props.route.params.userID;
     userPlant = this.props.route.params.userPlant;
      plant = this.props.route.params.plant;
@@ -36,9 +39,10 @@ export default class Plant extends Component {
     nextWatering:"",
     lastWatered: "",
     frequency:0,
-    editLastWateredModal:false,
-    editNextWateringModal:false,
+    editLastWateredModal: false,
+    editNextWateringModal: false,
     editFrequencyModal:false
+    
   }
   
   
@@ -60,6 +64,59 @@ export default class Plant extends Component {
       this.setState({wSExists:true})
       await this.getWateringSchedule();
     }
+  }
+
+  calculatePossibleLastWateredDates() {
+    let possibleLastWateredDates = [];
+    let currentDate = new Date();
+    let resultDate = new Date(currentDate);
+    for(let i = 1; i <= this.state.frequency; i++) {
+      resultDate.setDate(resultDate.getDate() - i);
+      possibleLastWateredDates.push({label: resultDate.toLocaleString().split(',')[0], value:i});
+      resultDate = new Date(currentDate);
+    }
+    this.setState({possibleLastWateredDates:possibleLastWateredDates})
+  }
+
+  async editLastWatered() {
+    
+    let newLastWatered = new Date(this.state.editLastWatered)
+    if (newLastWatered == new Date(this.state.lastWatered))
+      return;
+    let newNextWatering = new Date(newLastWatered);
+    newNextWatering.setDate(newNextWatering.getDate() + this.state.frequency);
+    await fetch("http://localhost:5000/ws/editLastWatered", {
+      method:'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        WSID: this.userPlant.wateringSchedule,
+        newLastWatered: newLastWatered,
+        newNextWatering: newNextWatering
+      })
+    }).then(async res => await res.json()).then(res => {
+      
+      this.setState({lastWatered:new Date(res.lastWatered).toLocaleString().split(',')[0], nextWatering: new Date(res.nextWatering).toLocaleString().split(',')[0]})}).catch(err => console.log("Error: "+ err))
+  }
+
+  async editNextWatering() {
+    let newNextWatering = this.state.editNextWatering;
+    if (newNextWatering == new Date(this.state.nextWatering))
+      return;
+    let newFrequency = newNextWatering - (new Date(this.state.lastWatered));
+    await fetch("http://localhost:5000/ws/editNextWatering", {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        WSID: this.userPlant.wateringSchedule,
+        newNextWatering: newNextWatering,
+        newFrequency : newFrequency
+      })
+    }).then(async res => await res.json()).then(res => this.setState({nextWatering: new Date(res.nextWatering).toLocaleString().split(',')[0], frequency: res.frequency})).catch(err => console.log("Error: "+ err))
+
   }
 
   async delete() {
@@ -92,7 +149,6 @@ export default class Plant extends Component {
   }
 
   async editName(newName) {
-    console.log(newName)
     await fetch("https://plantparent506.herokuapp.com/userPlants/editName", { 
       method: 'PUT',
       headers: {
@@ -105,13 +161,31 @@ export default class Plant extends Component {
     }).then(async res=> await res.json()).then(res => this.setState({givenName:res.givenName}))
   }
 
+  async editFrequency() {
+    let newFrequency = parseInt(this.state.editFrequency)
+    let newNextWatering = new Date(this.state.lastWatered)
+    newNextWatering.setDate(newNextWatering.getDate() + newFrequency)
+    
+    await fetch("http://localhost:5000/ws/editFrequency", {
+      method:'PUT',
+      headers: {
+        'Content-Type':'application/json'
+      },
+      body: JSON.stringify({
+        WSID: this.userPlant.wateringSchedule,
+        newNextWatering: newNextWatering,
+        newFrequency : newFrequency
+      })
+    }).then(async res => await res.json()).then(res => this.setState({frequency:res.frequency, nextWatering:new Date(res.nextWatering).toLocaleString().split(',')[0]}))
+  }
+
   async createWS(frequency) {
     let lastWatered = new Date();
     let nextWatering = new Date(lastWatered);
   nextWatering.setDate(nextWatering.getDate() + frequency);
   console.log(nextWatering)
   
-    await fetch('http://localhost:5000/ws/create', {
+    await fetch('https://plantparent506.herokuapp.com/ws/create', {
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body: JSON.stringify({
@@ -120,7 +194,7 @@ export default class Plant extends Component {
         nextWatering:nextWatering
       })
     }).then(async res => res.json()).then(async res => {
-      await fetch('http://localhost:5000/userPlants/addWS', {
+      await fetch('https://plantparent506.herokuapp.com/userPlants/addWS', {
         method: 'PUT',
         headers: {
           'Content-Type':'application/json'
@@ -138,7 +212,7 @@ export default class Plant extends Component {
   }
 
   async getWateringSchedule () {
-    await fetch("http://localhost:5000/ws/get/" + this.userPlant.wateringSchedule, {
+    await fetch("https://plantparent506.herokuapp.com/ws/get/" + this.userPlant.wateringSchedule, {
       method:'GET',
       headers: {
         'Content-Type':'application/json'
@@ -166,7 +240,7 @@ export default class Plant extends Component {
       newStage = "Mature";
     }
 
-    await fetch("http://localhost:5000/userPlants/editStage", { 
+    await fetch("https://plantparent506.herokuapp.com/userPlants/editStage", { 
       method: 'PUT',
       headers: {
         'Content-Type':'application/json'
@@ -178,7 +252,6 @@ export default class Plant extends Component {
     }).then(async res=> await res.json()).then(res => {this.userPlant.stage = res.stage; this.setState({slider:num})})
   }
 
- 
 
 
   render() {
@@ -222,14 +295,6 @@ export default class Plant extends Component {
 
             <View style={styles.needFlexWrapper}>
               <View style={styles.needContainer}>
-                {/*<View style={styles.icon}>
-                  <Ionicons name="sunny-outline" size={50} color="#51A746" />
-                  <Text style={styles.amount}>Full Sun</Text>
-                </View>
-                <View style={styles.icon}>
-                  <Ionicons name="water-outline" size={50} color="#51A746" />
-                  <Text style={styles.amount}>Every Week</Text>
-                </View>*/}
                 {this.userPlant.stage == "Seed" && (
                   <View style={styles.icon}>
                     <MaterialCommunityIcons
@@ -370,21 +435,42 @@ export default class Plant extends Component {
                     <Text style = {{fontSize:17}}>
                       {this.state.lastWatered}
                     </Text>
-                    <EvilIcons name="pencil" size={24} color="black"  />
+                    <TouchableOpacity onPress = {() =>{ this.calculatePossibleLastWateredDates(); this.setState({editLastWateredModal:true})}}>
+                      <EvilIcons name="pencil" size={24} color="black"  />
+                    </TouchableOpacity>            
                     </View>
-                    <Modal
+                    {this.state.editLastWateredModal && <Modal
                       animationType="fade"
                       transparent={true}
                       visible={this.state.editLastWateredModal}
-                      onRequestClose={() => {
-                        Alert.alert("Modal has been closed.");
-                        setModalVisible(!modalVisible);
-                      }}
                     >
+
                       <View style={styles.centeredView}>
-                        
+                        <View style={styles.modalView}>
+                         <RadioForm
+                           radio_props={this.state.possibleLastWateredDates}
+                           initial={0}
+                           onPress={( value) => { this.setState({editLastWatered:this.state.possibleLastWateredDates[value-1].label});}}
+                         ></RadioForm>
+                          
+                          <TouchableOpacity
+                            onPress = {() => {this.editLastWatered(); this.setState({editLastWateredModal:false})}}
+                            style = {{width:70, height:40, backgroundColor:'green', padding:10, textAlign:'center', marginBottom:10 }} >
+                            <Text style= {{color:'white'}}>
+                              Submit 
+                            </Text>
+                          </TouchableOpacity>
+                          <TouchableOpacity style = {{width:70, height:40, backgroundColor:'red', padding:10, textAlign:'center' }} onPress = {() => this.setState({editLastWateredModal:false})}>
+                            <Text style= {{color:'white'}}>
+                              Close
+                            </Text>
+                          </TouchableOpacity>
+                          
+                        </View> 
                       </View>
-                    </Modal>
+
+                    </Modal>}
+     
                   </View>
                   <View style = {styles.wsIcon}>
                     <MaterialCommunityIcons name="watering-can" size={40} color="green" />
@@ -395,8 +481,42 @@ export default class Plant extends Component {
                       <Text style = {{fontSize:17}}>
                         {this.state.nextWatering}
                       </Text>
-                      <EvilIcons name="pencil" size={24} color="black"  />
+                      <TouchableOpacity onPress = {()=>{this.setState({editNextWateringModal:true})}}>
+                        <EvilIcons name="pencil" size={24} color="black"  />
+                      </TouchableOpacity>
                       </View>
+                      {this.state.editNextWateringModal && <Modal
+                      animationType="fade"
+                      transparent={true}
+                      visible={this.state.editNextWateringModal}
+                    >
+
+                      <View style={styles.centeredView}>
+                        <View style={styles.modalView}>
+                         <DateTimePicker
+                           value = {this.state.nextWatering}
+                           mode = "date"
+                           onChange = {(event, date) => this.setState({editNextWatering:date})}
+                         > 
+                         </DateTimePicker>
+                          
+                          <TouchableOpacity
+                            onPress = {() => {this.editNextWatering(); this.setState({editNextWateringModal:false})}}
+                            style = {{width:70, height:40, backgroundColor:'green', padding:10, textAlign:'center', marginBottom:10 }} >
+                            <Text style= {{color:'white'}}>
+                              Submit 
+                            </Text>
+                          </TouchableOpacity>
+                          <TouchableOpacity style = {{width:70, height:40, backgroundColor:'red', padding:10, textAlign:'center' }} onPress = {() => this.setState({editNextWateringModal:false})}>
+                            <Text style= {{color:'white'}}>
+                              Close
+                            </Text>
+                          </TouchableOpacity>
+                          
+                        </View> 
+                      </View>
+
+                    </Modal>}
                   </View>
                   <View style = {styles.wsIcon}>
                     <MaterialCommunityIcons name="refresh" size={40} color="green" />
@@ -407,8 +527,44 @@ export default class Plant extends Component {
                   <Text style = {{fontSize:17}}>
                       {this.state.frequency}
                     </Text>
-                    <EvilIcons name="pencil" size={24} color="black"  />
+                    <TouchableOpacity onPress ={()=>this.setState({editFrequencyModal:true})}>
+                      <EvilIcons name="pencil" size={24} color="black"  />
+                    </TouchableOpacity>
                   </View>
+                  {this.state.editFrequencyModal && <Modal
+                      animationType="fade"
+                      transparent={true}
+                      visible={this.state.FrequencyModal}
+                    >
+
+                      <View style={styles.centeredView}>
+                        <View style={styles.modalView}>
+                          <Text>
+                            Please enter your new frequency in number of days!
+                          </Text>
+                         <TextInput
+                          placeholder={this.state.frequency}
+                          onChange={(text)=>this.setState({editFrequency:text})}
+                         >
+                         </TextInput>
+                          
+                          <TouchableOpacity
+                            onPress = {() => {this.editFrequency(); this.setState({editFrequencyModal:false})}}
+                            style = {{width:70, height:40, backgroundColor:'green', padding:10, textAlign:'center', marginBottom:10 }} >
+                            <Text style= {{color:'white'}}>
+                              Submit 
+                            </Text>
+                          </TouchableOpacity>
+                          <TouchableOpacity style = {{width:70, height:40, backgroundColor:'red', padding:10, textAlign:'center' }} onPress = {() => this.setState({editFrequencyModal:false})}>
+                            <Text style= {{color:'white'}}>
+                              Close
+                            </Text>
+                          </TouchableOpacity>
+                          
+                        </View> 
+                      </View>
+
+                    </Modal>}
                   </View>
                 </View>
               }
@@ -539,14 +695,14 @@ const styles = StyleSheet.create({
   },
   title: {
     paddingTop: 20,
-    fontFamily: "Helvetica",
+    //fontFamily: "Helvetica",
     fontSize: 20,
     color: "#515151",
     paddingBottom: 10,
     textAlign:'center'
   },
   subtitle: {
-    fontFamily: "Helvetica",
+   // fontFamily: "Helvetica",
     textAlign: "left",
     fontSize: 15,
     color: "#515151",
@@ -579,5 +735,20 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     width: 200,
 
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
   },
 });

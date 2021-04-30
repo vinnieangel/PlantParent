@@ -16,27 +16,34 @@ router.route('/get/:WSID').get((req, res) => {
 
 router.route('/editLastWatered').put((req, res) => {
     const WSID = req.body.WSID;
+    
     const newLastWatered = req.body.newLastWatered;
+    const newNextWatering = req.body.newNextWatering;
     wS.findOne({_id:WSID}).then(ws => {
         ws.lastWatered = newLastWatered;
+        ws.nextWatering = newNextWatering;
         ws.save().then(newWs =>res.status(200).json(newWs)).catch(err => console.log("Error: " + err))
     }).catch(err => console.log("Error: " + err));
 })
 
 router.route('/editFrequency').put((req, res) => {
     const WSID = req.body.WSID;
-    const frequency = req.body.frequency;
+    const newFrequency = req.body.newFrequency;
+    const newNextWatering = req.body.newNextWatering;
     wS.findOne({_id:WSID}).then(ws => {
-        ws.frequency = frequency;
+        ws.frequency = newFrequency;
+        ws.newNextWatering = newNextWatering;
         ws.save().then(newWs =>res.status(200).json(newWs)).catch(err => console.log("Error: " + err))
     }).catch(err => console.log("Error: " + err));
 })
 
 router.route('/editNextWatering').put((req, res) => {
     const WSID = req.body.WSID;
-    const nextWatering = req.body.nextWatering;
+    const nextWatering = req.body.newNextWatering;
+    const frequency = req.body.newFrequency
     wS.findOne({_id:WSID}).then(ws => {
         ws.nextWatering = nextWatering;
+        ws.frequency = frequency
         ws.save().then(newWs =>res.status(200).json(newWs)).catch(err => console.log("Error: " + err))
     }).catch(err => console.log("Error: " + err));
 })
