@@ -134,7 +134,7 @@ export default class SearchArea extends React.Component {
           onChangeText={onChangeSearch}
           value={search}
         /> */}
-
+        <View style={{ height: 60 }}></View>
         <View style={styles.listContainer}>
           <FlatList
             data={this.state.dummyPlants}
@@ -187,12 +187,12 @@ export default class SearchArea extends React.Component {
 
                 <View style={styles.plantBioWrapper}>
                   {/*<ReadMore numberOfLines={3}>*/}
-                    <Text style={styles.plantBio}>
-                      {
-                        this.state.dummyPlants[this.state.clickedPlantIndex]
-                          .basicDescription
-                      }
-                    </Text>
+                  <Text style={styles.plantBio}>
+                    {
+                      this.state.dummyPlants[this.state.clickedPlantIndex]
+                        .basicDescription
+                    }
+                  </Text>
                   {/*</ReadMore>*/}
                 </View>
                 <Text style={styles.plantInfoTitle}>Plant Nickname</Text>
