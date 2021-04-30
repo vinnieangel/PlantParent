@@ -134,7 +134,7 @@ export default class SearchArea extends React.Component {
           onChangeText={onChangeSearch}
           value={search}
         /> */}
-
+        <View style={{ height: 60 }}></View>
         <View style={styles.listContainer}>
           <FlatList
             data={this.state.dummyPlants}
